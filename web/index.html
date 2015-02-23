@@ -1,0 +1,66 @@
+<!doctype html>
+
+<html lang='en-GB'>
+<head>
+  <meta charset='utf-8'>
+  <title>Open Compute Project</title>
+</head>
+
+<body>
+    <h1>Open Compute Project</h1>
+    <div id='container'></div>
+
+    <script id='template' type='text/ractive'>
+        <p>Server status : {{ server_status }}</p>
+        <button on-click='toggle-power-state'>{{ label_power_state }}</button>
+    </script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src='http://cdn.ractivejs.org/latest/ractive.min.js'></script>
+    <script>
+        var ractive = new Ractive({
+            el: 'container',
+            template: '#template',
+            data: {
+                server_status: 'stopped',
+                power_state: 'OFF',
+                label_power_state: 'Power On'
+            }
+        });
+
+        listener = ractive.on({
+            'toggle-power-state': function () {
+                power_state = ractive.get('power_state');
+                if (power_state === 'ON') {
+                    $.ajax({
+                        'error': function (jqXHR, status, error) {
+                            ractive.set('server_status', 'Unknown (HTTP error' + error + ')');
+                        },
+                        'success': function (data, status, jqXHR) {
+                            ractive.set('server_status', data.status);
+                            ractive.set('power_state', 'OFF');
+                            ractive.set('label_power_state', 'Power On');
+                        },
+                        'type': 'PUT',
+                        'url': '/server/1/stop'
+                    });
+                }
+                else if (power_state === 'OFF') {
+                    $.ajax({
+                        'error': function (jqXHR, status, error) {
+                            ractive.set('server_status', 'Unknown (HTTP error' + error + ')');
+                        },
+                        'success': function (data, status, jqXHR) {
+                            ractive.set('server_status', data.status);
+                            ractive.set('power_state', 'ON');
+                            ractive.set('label_power_state', 'Power Off');
+                        },
+                        'type': 'PUT',
+                        'url': '/server/1/start'
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

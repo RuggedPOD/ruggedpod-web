@@ -1,0 +1,3 @@
+web/packages/
+*.swp
+.vagrant/

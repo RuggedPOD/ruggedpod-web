@@ -1,0 +1,8 @@
+{
+  "name": "ruggedpod-web",
+  "version": "0.0.1",
+  "dependencies": {
+    "ractive": "0.6.1",
+    "jquery": "1.11.2"
+  }
+}

@@ -33,7 +33,7 @@ Vagrant.configure('2') do |config|
   end
 
   config.vm.network "forwarded_port", guest: 80, host: 8000
-  config.vm.synced_folder 'web', '/var/www/html'
+  config.vm.synced_folder 'web', '/var/www/ruggedpod'
   config.vm.synced_folder '../ruggedpod-api', "/opt/ruggedpod-api"
   config.vm.provision 'shell', inline: $script
 end

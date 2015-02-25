@@ -49,17 +49,23 @@ var ruggedpod = (function () {
         return data;
     }
 
-    function get(opts){
-        // TODO check name is present
+    function get(opts) {
+        if (_.isUndefined(opts.name) || opts.name === '' || opts.name === null) {
+            if (!_.isUndefined(opts['error'])) {
+                opts['error']('name is not defined', null);
+            }
+            return;
+        }
+
         $.ajax({
-            'error': function (jqXHR, status, error) {
+            error: function (jqXHR, status, error) {
                 console.log(status);
                 console.log(error);
                 if ("error" in opts) {
                     opts['error'](error, status);
                 }
             },
-            'success': function (data, status, jqXHR) {
+            success: function (data, status, jqXHR) {
                 console.log(status); // TODO Check status
                 console.log(data);
                 var resp = xml2object(data.children[0]);

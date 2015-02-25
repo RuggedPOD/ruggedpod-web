@@ -9,16 +9,26 @@ a2enmod proxy_http
 rm -f /etc/apache2/ports.conf /etc/apache2/sites-enabled/*
 ln -s /vagrant/apache/ports.conf /etc/apache2/ports.conf
 ln -s /vagrant/apache/ocp-vhost.conf /etc/apache2/sites-enabled/ocp-vhost.conf
-service apache2 restart
 
 apt-get install -y python-dev python-pip libxml2-dev libxslt1-dev zlib1g-dev
 pip install virtualenv
 
 cd /opt/ruggedpod-api
+rm -rf env
 virtualenv env
 source env/bin/activate
 pip install -r mock-requirements.txt
-python server.py >> /var/log/ruggedpod-api.log 2>&1 &
+
+cat > /etc/rc.local << EOL
+#!/bin/bash
+
+service apache2 restart
+cd /opt/ruggedpod-api
+env/bin/python server.py -m >> /var/log/ruggedpod-api.log 2>&1 &
+EOL
+
+chmod a+x /etc/rc.local
+/etc/rc.local
 
 curl -sSL https://deb.nodesource.com/setup | sudo bash -
 apt-get install -y git nodejs build-essential

@@ -10,33 +10,34 @@ var ractive = new Ractive({
 
 listener = ractive.on({
     'toggle-power-state': function () {
+
         power_state = ractive.get('power_state');
         if (power_state === 'ON') {
-            $.ajax({
-                'error': function (jqXHR, status, error) {
-                    ractive.set('server_status', 'Unknown (HTTP error' + error + ')');
+            ruggedpod.get({
+                name: 'SetBladeAttentionLEDOff',
+                params: 'bladeId=1',
+                error: function (error) {
+                    ractive.set('server_status', 'Error : ' + error);
                 },
-                'success': function (data, status, jqXHR) {
+                success: function(data) {
                     ractive.set('server_status', data.status);
                     ractive.set('power_state', 'OFF');
                     ractive.set('label_power_state', 'Power On');
-                },
-                'type': 'PUT',
-                'url': '/server/1/stop'
+                }
             });
         }
         else if (power_state === 'OFF') {
-            $.ajax({
-                'error': function (jqXHR, status, error) {
-                    ractive.set('server_status', 'Unknown (HTTP error' + error + ')');
+            ruggedpod.get({
+                name: 'SetBladeAttentionLEDOn',
+                params: 'bladeId=1',
+                error: function (error) {
+                    ractive.set('server_status', 'Error : ' + error);
                 },
-                'success': function (data, status, jqXHR) {
+                success: function(data) {
                     ractive.set('server_status', data.status);
                     ractive.set('power_state', 'ON');
                     ractive.set('label_power_state', 'Power Off');
-                },
-                'type': 'PUT',
-                'url': '/server/1/start'
+                }
             });
         }
     }

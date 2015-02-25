@@ -1,23 +1,41 @@
 <!doctype html>
 
-<html lang='en-GB'>
+<html lang="en">
+
 <head>
-  <meta charset='utf-8'>
-  <title>Open Compute Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset='utf-8'>
+    <title>Open Compute Project</title>
+
+    <link href="packages/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="packages/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="css/ruggedpod.css" rel="stylesheet">
 </head>
 
 <body>
-    <h1>Open Compute Project</h1>
-    <div id='container'></div>
 
-    <script id='template' type='text/ractive'>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">RuggedPod</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" id="container">
+
+    </div>
+
+    <script id="template" type="text/ractive">
         <p>Server status : {{ server_status }}</p>
-        <button on-click='toggle-power-state'>{{ label_power_state }}</button>
+        <button on-click="toggle-power-state">{{ label_power_state }}</button>
     </script>
 
+    <script src="packages/underscore/underscore-min.js"></script>
     <script src="packages/jquery/dist/jquery.min.js"></script>
-    <script src='packages/ractive/ractive.min.js'></script>
-    <script src='js/ruggedpod-client.js'></script>
-    <script src='js/ruggedpod-app.js'></script>
+    <script src="packages/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="packages/ractive/ractive.min.js"></script>
+    <script src="js/ruggedpod-client.js"></script>
+    <script src="js/ruggedpod-app.js"></script>
 </body>
 </html>

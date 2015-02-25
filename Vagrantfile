@@ -11,7 +11,7 @@ ln -s /vagrant/apache/ports.conf /etc/apache2/ports.conf
 ln -s /vagrant/apache/ocp-vhost.conf /etc/apache2/sites-enabled/ocp-vhost.conf
 service apache2 restart
 
-apt-get install -y python-dev python-pip
+apt-get install -y python-dev python-pip libxml2-dev libxslt1-dev zlib1g-dev
 pip install virtualenv
 
 cd /opt/ruggedpod-api

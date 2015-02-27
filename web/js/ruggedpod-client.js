@@ -5,7 +5,7 @@ var ruggedpod = (function () {
         var	data = {};
 
         // append a value
-        function Add(name, value) {
+        function add(name, value) {
             if (data[name]) {
                 if (data[name].constructor != Array) {
                     data[name] = [data[name]];
@@ -24,7 +24,7 @@ var ruggedpod = (function () {
                 // Ignore namespaces.
                 continue;
             }
-            Add('@' + cn.name, cn.value);
+            add('@' + cn.name, cn.value);
         }
 
         // child elements
@@ -32,15 +32,15 @@ var ruggedpod = (function () {
             if (cn.nodeType == 1) {
                 if (cn.childNodes.length == 1 && cn.firstChild.nodeType == 3) {
                     // text value
-                    Add(cn.nodeName, cn.firstChild.nodeValue);
+                    add(cn.nodeName, cn.firstChild.nodeValue);
                 }
                 else {
                     // sub-object
                     var objectNode = xml2object(cn);
                     if (Object.keys(objectNode).length == 0) {
-                        Add(cn.nodeName, null);
+                        add(cn.nodeName, null);
                     } else {
-                        Add(cn.nodeName, xml2object(cn));
+                        add(cn.nodeName, xml2object(cn));
                     }
                 }
             }
@@ -83,31 +83,26 @@ var ruggedpod = (function () {
     function get(opts) {
         if (_.isUndefined(opts.name) || opts.name === '' || opts.name === null) {
             if (!_.isUndefined(opts['error'])) {
-                opts['error']('name is not defined', null);
+                opts['error']('"name" field is not defined', null);
             }
             return;
         }
 
         $.ajax({
             error: function (jqXHR, status, error) {
-                console.log(status);
-                console.log(error);
                 if ("error" in opts) {
                     opts['error'](error, status);
                 }
             },
             success: function (data, status, jqXHR) {
-                console.log(status); // TODO Check status
-                console.log(data);
                 var resp = xml2object(data.children[0]);
-                console.log(resp);
                 if ('success' in opts) {
                     opts['success'](resp, status);
                 }
             },
             dataType: 'xml',
-            'type': 'GET',
-            'url': buildUrl(opts)
+            type: 'GET',
+            url: buildUrl(opts)
         });
     }
 

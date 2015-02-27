@@ -1,1 +1,1 @@
-# RuggedPOD web management interface
+# RuggedPOD Management Console

@@ -15,7 +15,9 @@ listener = ractive.on({
         if (power_state === 'ON') {
             ruggedpod.get({
                 name: 'SetBladeAttentionLEDOff',
-                params: 'bladeId=1',
+                params: {
+                    bladeId: 1
+                },
                 error: function (error) {
                     ractive.set('server_status', 'Error : ' + error);
                 },
@@ -29,7 +31,9 @@ listener = ractive.on({
         else if (power_state === 'OFF') {
             ruggedpod.get({
                 name: 'SetBladeAttentionLEDOn',
-                params: 'bladeId=1',
+                params: {
+                    bladeId: 1
+                },
                 error: function (error) {
                     ractive.set('server_status', 'Error : ' + error);
                 },

@@ -49,6 +49,37 @@ var ruggedpod = (function () {
         return data;
     }
 
+    function buildUrl(opts) {
+        var url = '/admin/' + opts['name'];
+
+        if (_.isUndefined(opts['params']) || opts['params'] === null) {
+            return url;
+        }
+
+        if (!_.isObject(opts['params'])) {
+            opts['error']('"params" field must be an object', null);
+            return url;
+        }
+
+        if (_.isEmpty(opts['params'])) {
+            return url;
+        }
+
+        url += '?';
+        var isFirst = true;
+        for (key in opts['params']) {
+            if (isFirst) {
+                isFirst = false;
+            }
+            else {
+                url += '&';
+            }
+            url += key + '=' + opts['params'][key];
+        }
+
+        return url;
+    }
+
     function get(opts) {
         if (_.isUndefined(opts.name) || opts.name === '' || opts.name === null) {
             if (!_.isUndefined(opts['error'])) {
@@ -76,7 +107,7 @@ var ruggedpod = (function () {
             },
             dataType: 'xml',
             'type': 'GET',
-            'url': '/admin/' + opts['name'] + '?' + opts['params'] // TODO Make params a json object
+            'url': buildUrl(opts)
         });
     }
 

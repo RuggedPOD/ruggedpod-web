@@ -1,2 +1,20 @@
-<p>Server status : {{ server_status }}</p>
-<button on-click="toggle-power-state">{{ label_power_state }}</button>
+<table class="table table-striped tabe-condensed">
+    <thead>
+    <tr>
+        <th>Blade ID</th>
+        <th class="text-right">Attention LED</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {{#each blades}}
+    <tr>
+        <td>{{id}}</td>
+        <td class="text-right">
+            <button class="btn btn-sm btn-success" on-click="set-attention-led-on:{{id}}">On</button>
+            <button class="btn btn-sm btn-danger" on-click="set-attention-led-off:{{id}}">Off</button>
+        </td>
+    </tr>
+    {{/each}}
+    </tbody>
+</table>

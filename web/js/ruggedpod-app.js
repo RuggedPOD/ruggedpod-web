@@ -20,48 +20,51 @@ $.when(
         template: templateIndex,
         partials: partials,
         data: {
-            server_status: 'stopped',
-            power_state: 'OFF',
-            label_power_state: 'Power On'
+            blades: [
+                {
+                    id: 1
+                },
+                {
+                    id: 2
+                },
+                {
+                    id: 3
+                },
+                {
+                    id: 4
+                }
+            ]
         }
     });
 
     listener = ractive.on({
-        'toggle-power-state': function () {
-
-            power_state = ractive.get('power_state');
-            if (power_state === 'ON') {
-                ruggedpod.get({
-                    name: 'SetBladeAttentionLEDOff',
-                    params: {
-                        bladeId: 1
-                    },
-                    error: function (error) {
-                        ractive.set('server_status', 'Error : ' + error);
-                    },
-                    success: function(data) {
-                        ractive.set('server_status', data.status);
-                        ractive.set('power_state', 'OFF');
-                        ractive.set('label_power_state', 'Power On');
-                    }
-                });
-            }
-            else if (power_state === 'OFF') {
-                ruggedpod.get({
-                    name: 'SetBladeAttentionLEDOn',
-                    params: {
-                        bladeId: 1
-                    },
-                    error: function (error) {
-                        ractive.set('server_status', 'Error : ' + error);
-                    },
-                    success: function(data) {
-                        ractive.set('server_status', data.status);
-                        ractive.set('power_state', 'ON');
-                        ractive.set('label_power_state', 'Power Off');
-                    }
-                });
-            }
+        'set-attention-led-on': function (event, id) {
+            ruggedpod.get({
+                name: 'SetBladeAttentionLEDOn',
+                params: {
+                    bladeId: id
+                },
+                error: function (error) {
+                    // TODO error popup
+                },
+                success: function(data) {
+                    // TODO success popup
+                }
+            });
+        },
+        'set-attention-led-off': function (event, id) {
+            ruggedpod.get({
+                name: 'SetBladeAttentionLEDOff',
+                params: {
+                    bladeId: id
+                },
+                error: function (error) {
+                    // TODO error popup
+                },
+                success: function(data) {
+                    // TODO success popup
+                }
+            });
         }
     });
 

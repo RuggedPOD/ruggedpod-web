@@ -5,6 +5,6 @@
     "ractive": "0.6.1",
     "jquery": "1.11.2",
     "bootstrap": "3.3.1",
-    "underscore": "~1.8.2"
+    "underscore": "1.8.2"
   }
 }

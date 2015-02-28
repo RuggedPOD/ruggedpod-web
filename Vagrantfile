@@ -2,16 +2,16 @@
 # vi: set ft=ruby :
 
 $script = <<SCRIPT
-apt-get update
+sudo apt-get update
 
-apt-get install -y apache2
-a2enmod proxy_http
-rm -f /etc/apache2/ports.conf /etc/apache2/sites-enabled/*
-ln -s /vagrant/apache/ports.conf /etc/apache2/ports.conf
-ln -s /vagrant/apache/ocp-vhost.conf /etc/apache2/sites-enabled/ocp-vhost.conf
+sudo apt-get install -y apache2
+sudo a2enmod proxy_http
+sudo rm -f /etc/apache2/ports.conf /etc/apache2/sites-enabled/*
+sudo ln -s /vagrant/apache/ports.conf /etc/apache2/ports.conf
+sudo ln -s /vagrant/apache/ocp-vhost.conf /etc/apache2/sites-enabled/ocp-vhost.conf
 
-apt-get install -y python-dev python-pip libxml2-dev libxslt1-dev zlib1g-dev
-pip install virtualenv
+sudo apt-get install -y python-dev python-pip libxml2-dev libxslt1-dev zlib1g-dev
+sudo pip install virtualenv
 
 cd /opt/ruggedpod-api
 rm -rf env
@@ -19,7 +19,7 @@ virtualenv env
 source env/bin/activate
 pip install -r mock-requirements.txt
 
-cat > /etc/rc.local << EOL
+sudo tee /etc/rc.local > /dev/null << EOL
 #!/bin/bash
 
 service apache2 restart
@@ -27,12 +27,15 @@ cd /opt/ruggedpod-api
 env/bin/python server.py -m >> /var/log/ruggedpod-api.log 2>&1 &
 EOL
 
-chmod a+x /etc/rc.local
-/etc/rc.local
+sudo chmod a+x /etc/rc.local
+sudo /etc/rc.local
 
 curl -sSL https://deb.nodesource.com/setup | sudo bash -
-apt-get install -y git nodejs build-essential
-npm install -g bower
+sudo apt-get install -y git nodejs build-essential
+sudo npm install -g bower
+
+cd /vagrant
+bower install
 SCRIPT
 
 Vagrant.configure('2') do |config|
@@ -45,5 +48,5 @@ Vagrant.configure('2') do |config|
   config.vm.network "forwarded_port", guest: 80, host: 8000
   config.vm.synced_folder 'web', '/var/www/ruggedpod'
   config.vm.synced_folder '../ruggedpod-api', "/opt/ruggedpod-api"
-  config.vm.provision 'shell', inline: $script
+  config.vm.provision 'shell', inline: $script, privileged: false
 end

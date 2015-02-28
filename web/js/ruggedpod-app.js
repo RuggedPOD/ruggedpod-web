@@ -37,35 +37,50 @@ $.when(
         }
     });
 
-    listener = ractive.on({
-        'set-attention-led-on': function (event, id) {
+    ractive.on({
+        'pump-on': function (event, id) {
             ruggedpod.get({
                 name: 'SetBladeAttentionLEDOn',
                 params: {
                     bladeId: id
                 },
                 error: function (error) {
-                    // TODO error popup
+                    // TODO
                 },
                 success: function(data) {
-                    // TODO success popup
+                    // TODO
                 }
             });
         },
-        'set-attention-led-off': function (event, id) {
+        'pump-off': function (event, id) {
             ruggedpod.get({
                 name: 'SetBladeAttentionLEDOff',
                 params: {
                     bladeId: id
                 },
                 error: function (error) {
-                    // TODO error popup
+                    // TODO
                 },
                 success: function(data) {
-                    // TODO success popup
+                    // TODO
                 }
             });
-        }
+        },
+        'blade-on': function (event, id) {
+            // TODO
+        },
+        'blade-off': function (event, id) {
+            // TODO
+        },
+        'blade-reset': function (event, id) {
+            // TODO
+        },
+        'blade-force-off': function (event, id) {
+            // TODO
+        },
+        'serial-port-console': function (event, id) {
+            // TODO
+        },
     });
 
     // Display main page

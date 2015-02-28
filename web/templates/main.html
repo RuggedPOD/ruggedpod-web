@@ -1,20 +1,43 @@
-<table class="table table-striped tabe-condensed">
-    <thead>
-    <tr>
-        <th>Blade ID</th>
-        <th class="text-right">Attention LED</th>
-    </tr>
-    </thead>
+{{#each blades}}
 
-    <tbody>
-    {{#each blades}}
-    <tr>
-        <td>{{id}}</td>
-        <td class="text-right">
-            <button class="btn btn-sm btn-success" on-click="set-attention-led-on:{{id}}">On</button>
-            <button class="btn btn-sm btn-danger" on-click="set-attention-led-off:{{id}}">Off</button>
-        </td>
-    </tr>
-    {{/each}}
-    </tbody>
-</table>
+<div class="row blade-container">
+  <div class="col-md-1">
+      <h1><span class="label label-default text-center">{{id}}</span></h1>
+  </div>
+  <div class="col-md-1">
+
+  </div>
+  <div class="col-md-2 text-center">
+
+  </div>
+  <div class="col-md-4">
+      <div class="panel panel-default">
+          <div class="panel-heading text-center">State</div>
+          <div class="panel-body text-center">
+              <button class="btn btn-sm btn-success btn-on-off" on-click="blade-on:{{id}}">On</button>
+              <button class="btn btn-sm btn-danger btn-on-off" on-click="blade-off:{{id}}">Off</button>
+              <button class="btn btn-sm btn-primary btn-reset" on-click="blade-reset:{{id}}">Reset</button>
+              <button class="btn btn-sm btn-warning btn-force-off" on-click="blade-force-off:{{id}}">Force Off</button>
+          </div>
+      </div>
+  </div>
+  <div class="col-md-2">
+      <div class="panel panel-default">
+          <div class="panel-heading text-center">Serial console</div>
+          <div class="panel-body text-center">
+              <button class="btn btn-sm btn-info btn-serial-console" on-click="serial-port-console:{{id}}">Open</button>
+          </div>
+      </div>
+  </div>
+  <div class="col-md-2">
+      <div class="panel panel-default">
+          <div class="panel-heading text-center">Pump</div>
+          <div class="panel-body text-center">
+              <button class="btn btn-sm btn-success btn-on-off" on-click="pump-on:{{id}}">On</button>
+              <button class="btn btn-sm btn-danger btn-on-off" on-click="pump-off:{{id}}">Off</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+{{/each}}

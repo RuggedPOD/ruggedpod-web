@@ -1,3 +1,29 @@
 body {
-  padding-top: 70px;
+    padding-top: 70px;
+}
+
+.panel-heading {
+    padding: 3px 0px;
+}
+
+.btn-on-off {
+    width: 64px;
+}
+
+.btn-reset {
+    width: 80px;
+}
+
+.btn-force-off {
+    width: 80px;
+}
+
+.btn-serial-console {
+    width: 80px;
+}
+
+.blade-container {
+    margin-bottom: 25px;
+    padding-bottom: 5px;
+    border-bottom: solid 2px #ddd;
 }

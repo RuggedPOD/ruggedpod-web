@@ -8,7 +8,7 @@ sudo apt-get install -y apache2
 sudo a2enmod proxy_http
 sudo rm -f /etc/apache2/ports.conf /etc/apache2/sites-enabled/*
 sudo ln -s /vagrant/apache/ports.conf /etc/apache2/ports.conf
-sudo ln -s /vagrant/apache/ocp-vhost.conf /etc/apache2/sites-enabled/ocp-vhost.conf
+sudo ln -s /vagrant/apache/ruggedpod-vhost.conf /etc/apache2/sites-enabled/ruggedpod-vhost.conf
 
 sudo apt-get install -y python-dev python-pip libxml2-dev libxslt1-dev zlib1g-dev
 sudo pip install virtualenv

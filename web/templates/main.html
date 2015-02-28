@@ -26,7 +26,7 @@
 
   </div>
   <div class="col-md-2 text-center">
-
+      <div id="gauge-power-{{id}}" class="blade-gauge"></div>
   </div>
   <div class="col-md-4">
       <div class="panel panel-default">
@@ -57,5 +57,26 @@
       </div>
   </div>
 </div>
+
+<script>
+  var init{{id}} = 125
+  var delta{{id}} = [-10, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 10];
+
+  var g{{id}} = new JustGage({
+    id: "gauge-power-{{id}}",
+    value: init{{id}},
+    min: 0,
+    max: 200,
+    title: "Power (W)",
+    levelColors: ['#aaa']
+  });
+
+  setInterval(function () {
+      var rand = Math.floor(Math.random() * delta{{id}}.length);
+      console.log(rand);
+      g{{id}}.refresh(init{{id}} + delta{{id}}[rand]);
+  }, 1000);
+
+</script>
 
 {{/each}}

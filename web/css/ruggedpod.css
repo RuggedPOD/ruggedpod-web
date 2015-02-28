@@ -31,3 +31,8 @@ body {
     padding-bottom: 5px;
     border-bottom: solid 2px #ddd;
 }
+
+.blade-gauge {
+    width:200px;
+    height:96px;
+}

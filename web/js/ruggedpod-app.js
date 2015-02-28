@@ -20,6 +20,7 @@ $.when(
         template: templateIndex,
         partials: partials,
         data: {
+            notification: null,
             blades: [
                 {
                     id: 1
@@ -37,6 +38,16 @@ $.when(
         }
     });
 
+    function showNotification(text, severity) {
+        ractive.set('notification', {
+            text: text,
+            severity: severity ? severity : 'success'
+        });
+        setTimeout(function(){
+            ractive.set('notification', null);
+        }, 2000);
+    }
+
     ractive.on({
         'pump-on': function (event, id) {
             ruggedpod.get({
@@ -45,10 +56,10 @@ $.when(
                     bladeId: id
                 },
                 error: function (error) {
-                    // TODO
+                    showNotification('Unable to start pump for blade ' + id, 'danger');
                 },
                 success: function(data) {
-                    // TODO
+                    showNotification('Pump of blade ' + id + ' has been successfully started');
                 }
             });
         },
@@ -59,27 +70,27 @@ $.when(
                     bladeId: id
                 },
                 error: function (error) {
-                    // TODO
+                    showNotification('Unable to start pump for blade ' + id, 'danger');
                 },
                 success: function(data) {
-                    // TODO
+                    showNotification('Pump of blade ' + id + ' has been successfully stopped');
                 }
             });
         },
         'blade-on': function (event, id) {
-            // TODO
+            showNotification('Not yet implemented', 'info');
         },
         'blade-off': function (event, id) {
-            // TODO
+            showNotification('Not yet implemented', 'info');
         },
         'blade-reset': function (event, id) {
-            // TODO
+            showNotification('Not yet implemented', 'info');
         },
         'blade-force-off': function (event, id) {
-            // TODO
+            showNotification('Not yet implemented', 'info');
         },
         'serial-port-console': function (event, id) {
-            // TODO
+            showNotification('Not yet implemented', 'info');
         },
     });
 

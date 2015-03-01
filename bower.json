@@ -6,6 +6,8 @@
     "jquery": "1.11.2",
     "bootstrap": "3.3.1",
     "underscore": "1.8.2",
+    "requirejs": "2.1.16",
+    "requirejs-text": "2.0.14",
     "justgage-toorshia": "27cf990183c47ba0794e4c180236a7d0af244540"
   }
 }

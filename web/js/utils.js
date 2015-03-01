@@ -1,4 +1,4 @@
-var utils = (function () {
+define(function (app) {
 
     function generateID() {
         var d = new Date().getTime();
@@ -14,4 +14,4 @@ var utils = (function () {
         generateID: generateID
     };
 
-})();
+});

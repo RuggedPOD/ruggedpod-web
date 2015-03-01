@@ -1,4 +1,4 @@
-var ruggedpod = (function () {
+define(function () {
 
     function xml2object(node) {
 
@@ -110,4 +110,4 @@ var ruggedpod = (function () {
         get: get
     };
 
-})();
+});

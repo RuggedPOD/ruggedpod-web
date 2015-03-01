@@ -1,5 +1,5 @@
 body {
-    padding-top: 70px;
+    padding-top: 90px;
 }
 
 .panel-heading {
@@ -23,7 +23,7 @@ body {
 }
 
 .notification-container {
-    min-height: 75px;
+    font-size: 16px
 }
 
 .blade-container {

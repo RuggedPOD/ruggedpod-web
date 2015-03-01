@@ -43,10 +43,26 @@ $.when(
 
     function showNotification(text, severity) {
         var id = utils.generateID();
+        var icon;
+        if (severity === 'info') {
+            icon = 'glyphicon-info-sign'
+        }
+        else if (severity === 'succes') {
+            icon = 'glyphicon-ok-sign'
+        }
+        else if (severity === 'danger') {
+            icon = 'glyphicon-remove-sign'
+        }
+        else {
+            severity = 'success'
+            icon = 'glyphicon-ok-sign'
+        }
+
         ractive.set('notification', {
             id: id,
             text: text,
-            severity: severity ? severity : 'success'
+            severity: severity,
+            icon: icon
         });
         setTimeout(function(){
             n = ractive.get('notification');

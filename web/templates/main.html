@@ -1,20 +1,10 @@
-
-<div class="row notification-container">
-    <div class="col-md-3">
-
+<div class="row navbar-fixed-top notification-container">
+    {{#if notification !== null }}
+    <div class="alert alert-{{notification.severity}} text-center" role="alert">
+        <span class="glyphicon {{notification.icon}}"></span> {{notification.text}}
     </div>
-    <div class="col-md-6">
-        {{#if notification !== null }}
-        <div class="alert alert-{{notification.severity}} text-center" role="alert">
-            {{notification.text}}
-        </div>
-        {{/if}}
-    </div>
-    <div class="col-md-3">
-
-    </div>
+    {{/if}}
 </div>
-
 
 {{#each blades}}
 

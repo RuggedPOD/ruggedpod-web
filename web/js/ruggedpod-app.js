@@ -5,6 +5,8 @@ var partials = {};
 
 $.when(
 
+    $.getScript( "js/utils.js"),
+
     $.get("/templates/index", function(index) {
         templateIndex = index;
     }),
@@ -39,12 +41,17 @@ $.when(
     });
 
     function showNotification(text, severity) {
+        var id = utils.generateID();
         ractive.set('notification', {
+            id: id,
             text: text,
             severity: severity ? severity : 'success'
         });
         setTimeout(function(){
-            ractive.set('notification', null);
+            n = ractive.get('notification');
+            if (n !== null && n.id === id) {
+                ractive.set('notification', null);
+            }
         }, 2000);
     }
 

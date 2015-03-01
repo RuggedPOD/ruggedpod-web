@@ -6,6 +6,7 @@ var partials = {};
 $.when(
 
     $.getScript( "js/utils.js"),
+    $.getScript( "js/client.js"),
 
     $.get("/templates/index", function(index) {
         templateIndex = index;

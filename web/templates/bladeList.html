@@ -6,67 +6,108 @@
     {{/if}}
 </div>
 
-{{#each blades}}
+<div class="row">
 
-<div class="row blade-container">
-  <div class="col-md-1">
-      <h1><span class="label label-default text-center">{{id}}</span></h1>
-  </div>
-  <div class="col-md-1">
+    <div class="col-md-10 main-container">
+        <div class="blade-list-container">
+            {{#each blades:i}}
+            <div class="row {{# i !== blades.length-1 }}blade-container{{/}}">
+                <div class="col-md-1">
+                    <h1><span class="label label-default text-center">{{id}}</span></h1>
+                </div>
+                <div class="col-md-3">
+                    <div id="gauge-power-{{id}}" class="blade-gauge"></div>
+                </div>
+                <div class="col-md-5">
+                    <div class="panel panel-default">
+                        <div class="panel-heading text-center">State</div>
+                        <div class="panel-body text-center">
+                            <button class="btn btn-sm btn-success" on-click="blade-on-off-short:{{id}}">On / Off Short</button>
+                            <button class="btn btn-sm btn-danger" on-click="blade-on-off-long:{{id}}">On / Off Long</button>
+                            <button class="btn btn-sm btn-primary" on-click="blade-reset:{{id}}">Reset</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading text-center">Serial port</div>
+                        <div class="panel-body text-center">
+                            <button class="btn btn-sm btn-info" on-click="serial-port-open-terminal:{{id}}">Open terminal</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-  </div>
-  <div class="col-md-2 text-center">
-      <div id="gauge-power-{{id}}" class="blade-gauge"></div>
-  </div>
-  <div class="col-md-4">
-      <div class="panel panel-default">
-          <div class="panel-heading text-center">State</div>
-          <div class="panel-body text-center">
-              <button class="btn btn-sm btn-success btn-on-off" on-click="blade-on:{{id}}">On</button>
-              <button class="btn btn-sm btn-danger btn-on-off" on-click="blade-off:{{id}}">Off</button>
-              <button class="btn btn-sm btn-primary btn-reset" on-click="blade-reset:{{id}}">Reset</button>
-              <button class="btn btn-sm btn-warning btn-force-off" on-click="blade-force-off:{{id}}">Force Off</button>
-          </div>
-      </div>
-  </div>
-  <div class="col-md-2">
-      <div class="panel panel-default">
-          <div class="panel-heading text-center">Serial console</div>
-          <div class="panel-body text-center">
-              <button class="btn btn-sm btn-info btn-serial-console" on-click="serial-port-console:{{id}}">Open</button>
-          </div>
-      </div>
-  </div>
-  <div class="col-md-2">
-      <div class="panel panel-default">
-          <div class="panel-heading text-center">Pump</div>
-          <div class="panel-body text-center">
-              <button class="btn btn-sm btn-success btn-on-off" on-click="pump-on:{{id}}">On</button>
-              <button class="btn btn-sm btn-danger btn-on-off" on-click="pump-off:{{id}}">Off</button>
-          </div>
-      </div>
-  </div>
+            <script>
+                var init{{id}} = 125
+                var delta{{id}} = [-10, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 10];
+
+                var g{{id}} = new JustGage({
+                  id: "gauge-power-{{id}}",
+                  value: init{{id}},
+                  min: 0,
+                  max: 200,
+                  title: "Power (W)",
+                  levelColors: ['#aaa']
+                });
+
+                setInterval(function () {
+                    var rand = Math.floor(Math.random() * delta{{id}}.length);
+                    console.log(rand);
+                    g{{id}}.refresh(init{{id}} + delta{{id}}[rand]);
+                }, 1000);
+
+            </script>
+            {{/each}}
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="row text-center" style="margin-bottom: 30px">
+            <div id="gauge-power-all" class="blade-gauge"></div>
+        </div>
+        <script>
+            new JustGage({
+              id: "gauge-power-all",
+              value: 578,
+              min: 0,
+              max: 800,
+              title: "Cumulative power (W)",
+              levelColors: ['#aaa']
+            });
+        </script>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading text-center">All blades state</div>
+                    <div class="panel-body text-center">
+                        <div class="row" style="margin-bottom: 10px;">
+                            <button class="btn btn-sm btn-success" on-click="all-blades-on-off-short">On / Off Short</button>
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <button class="btn btn-sm btn-danger" on-click="all-blades-on-off-long">On / Off Long</button>
+                        </div>
+                        <div class="row">
+                            <button class="btn btn-sm btn-primary" on-click="all-blades-reset">Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading text-center">All pumps</div>
+                    <div class="panel-body text-center">
+                        <div class="row" style="margin-bottom: 10px;">
+                            <button class="btn btn-sm btn-success" on-click="all-pumps-on">On</button>
+                        </div>
+                        <div class="row">
+                            <button class="btn btn-sm btn-danger" on-click="all-pumps-off">Off</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-<script>
-  var init{{id}} = 125
-  var delta{{id}} = [-10, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 10];
-
-  var g{{id}} = new JustGage({
-    id: "gauge-power-{{id}}",
-    value: init{{id}},
-    min: 0,
-    max: 200,
-    title: "Power (W)",
-    levelColors: ['#aaa']
-  });
-
-  setInterval(function () {
-      var rand = Math.floor(Math.random() * delta{{id}}.length);
-      console.log(rand);
-      g{{id}}.refresh(init{{id}} + delta{{id}}[rand]);
-  }, 1000);
-
-</script>
-
-{{/each}}

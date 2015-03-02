@@ -6,24 +6,17 @@ body {
     padding: 3px 0px;
 }
 
-.btn-on-off {
-    width: 64px;
-}
-
-.btn-reset {
-    width: 80px;
-}
-
-.btn-force-off {
-    width: 80px;
-}
-
-.btn-serial-console {
-    width: 80px;
+.btn-sm {
+    width: 100px;
 }
 
 .notification-container {
     font-size: 16px
+}
+
+.blade-list-container {
+    border-right: solid 2px #ddd;
+    padding-right: 50px;
 }
 
 .blade-container {

@@ -6,15 +6,14 @@ define(['ractive', 'utils'], function(ractive, utils) {
         if (severity === 'info') {
             icon = 'glyphicon-info-sign'
         }
-        else if (severity === 'succes') {
+        else if (severity === 'success') {
             icon = 'glyphicon-ok-sign'
         }
         else if (severity === 'danger') {
             icon = 'glyphicon-remove-sign'
         }
         else {
-            severity = 'success'
-            icon = 'glyphicon-ok-sign'
+            return;
         }
 
         ractive.set('notification', {
@@ -31,8 +30,22 @@ define(['ractive', 'utils'], function(ractive, utils) {
         }, 2000);
     }
 
+    function showInfo(text) {
+        show(text, 'info');
+    }
+
+    function showSuccess(text) {
+        show(text, 'success');
+    }
+
+    function showError(text) {
+        show(text, 'danger');
+    }
+
     return {
-        show: show
+        showInfo: showInfo,
+        showError: showError,
+        showSuccess: showSuccess
     }
 
 })

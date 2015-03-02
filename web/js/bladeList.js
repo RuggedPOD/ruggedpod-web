@@ -8,10 +8,10 @@ define(['ractive', 'client', 'notification'], function(ractive, client, notifica
                     bladeId: id
                 },
                 error: function (error) {
-                    notification.show('Unable to start pump for blade ' + id, 'danger');
+                    notification.showError('Unable to start pump for blade ' + id);
                 },
                 success: function(data) {
-                    notification.show('Pump of blade ' + id + ' has been successfully started');
+                    notification.showSuccess('Pump of blade ' + id + ' has been successfully started');
                 }
             });
         },
@@ -22,28 +22,28 @@ define(['ractive', 'client', 'notification'], function(ractive, client, notifica
                     bladeId: id
                 },
                 error: function (error) {
-                    notification.show('Unable to start pump for blade ' + id, 'danger');
+                    notification.showError('Unable to start pump for blade ' + id);
                 },
                 success: function(data) {
-                    notification.show('Pump of blade ' + id + ' has been successfully stopped');
+                    notification.showSuccess('Pump of blade ' + id + ' has been successfully stopped');
                 }
             });
         },
         'blade-on': function (event, id) {
-            notification.show('Not yet implemented', 'info');
+            notification.showInfo('Not yet implemented');
         },
         'blade-off': function (event, id) {
-            notification.show('Not yet implemented', 'info');
+            notification.showInfo('Not yet implemented');
         },
         'blade-reset': function (event, id) {
-            notification.show('Not yet implemented', 'info');
+            notification.showInfo('Not yet implemented');
         },
         'blade-force-off': function (event, id) {
-            notification.show('Not yet implemented', 'info');
+            notification.showInfo('Not yet implemented');
         },
         'serial-port-console': function (event, id) {
-            notification.show('Not yet implemented', 'info');
-        },
+            notification.showInfo('Not yet implemented');
+        }
     });
 
 });

@@ -95,7 +95,7 @@ define(function () {
                 }
             },
             success: function (data, status, jqXHR) {
-                var resp = xml2object(data.children[0]);
+                var resp = xml2object(data.childNodes[0]);
                 if ('success' in opts) {
                     opts['success'](resp, status);
                 }

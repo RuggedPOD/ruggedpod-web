@@ -36,7 +36,7 @@ define(['ractive', 'client', 'notification'], function(ractive, client, notifica
         },
         'all-blades-on-off-long': function (event) {
             client.get({
-                name: 'SetBladeLongOnOff',
+                name: 'SetAllBladesLongOnOff',
                 error: function (error) {
                     notification.showError('Unable to send a long press button on all blades');
                 },

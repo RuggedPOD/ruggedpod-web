@@ -24,19 +24,57 @@ define(['ractive', 'client', 'notification'], function(ractive, client, notifica
             });
         },
         'all-blades-on-off-short': function (event) {
-            notification.showInfo('Not yet implemented');
+            client.get({
+                name: 'SetAllBladesShortOnOff',
+                error: function (error) {
+                    notification.showError('Unable to send a short press button on all blades');
+                },
+                success: function(data) {
+                    notification.showSuccess('Successfully sent a short press button on all blades');
+                }
+            });
         },
         'all-blades-on-off-long': function (event) {
-            notification.showInfo('Not yet implemented');
+            client.get({
+                name: 'SetBladeLongOnOff',
+                error: function (error) {
+                    notification.showError('Unable to send a long press button on all blades');
+                },
+                success: function(data) {
+                    notification.showSuccess('Successfully sent a long press button on all blades');
+                }
+            });
         },
         'all-blades-reset': function (event) {
             notification.showInfo('Not yet implemented');
         },
         'blade-on-off-short': function (event, id) {
-            notification.showInfo('Not yet implemented');
+            client.get({
+                name: 'SetBladeShortOnOff',
+                params: {
+                    bladeId: id
+                },
+                error: function (error) {
+                    notification.showError('Unable to send a short press button on blade ' + id);
+                },
+                success: function(data) {
+                    notification.showSuccess('Successfully sent a short press button on blade ' + id);
+                }
+            });
         },
         'blade-on-off-long': function (event, id) {
-            notification.showInfo('Not yet implemented');
+            client.get({
+                name: 'SetBladeLongOnOff',
+                params: {
+                    bladeId: id
+                },
+                error: function (error) {
+                    notification.showError('Unable to send a long press button on blade ' + id);
+                },
+                success: function(data) {
+                    notification.showSuccess('Successfully sent a long press button on blade ' + id);
+                }
+            });
         },
         'blade-reset': function (event, id) {
             notification.showInfo('Not yet implemented');

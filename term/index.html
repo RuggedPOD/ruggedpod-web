@@ -2,6 +2,28 @@
 
 <html>
 
+<head>
+    <style id="term-style">
+    .terminal {
+      float: left;
+      border: #000000 solid 10px;
+      font-family: "DejaVu Sans Mono", "Liberation Mono", monospace;
+      font-size: 14px;
+      color: #f0f0f0;
+      background: #000000;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+     }
+
+    .terminal-cursor {
+      color: #000000;
+      background: #f0f0f0;
+    }
+    </style>
+
+</head>
+
 <body>
     <div id="serial-terminal">
         <script type="text/javascript" src="/socket.io/socket.io.js"></script>
@@ -12,8 +34,8 @@
             var socket = io.connect();
             socket.on('connect', function() {
               var term = new Terminal({
-                cols: 120,
-                rows: 40,
+                cols: 80,
+                rows: 30,
                 useStyle: true,
                 screenKeys: true,
                 cursorBlink: true

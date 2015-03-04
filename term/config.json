@@ -1,0 +1,14 @@
+{
+    "http": {
+        "port": 7000
+    },
+    "term": {
+        "cols": 80,
+        "rows": 30
+    },
+    "screen": {
+        "cmd": "./screen-mock",
+        "device": "/dev/tty.usbmodem1411",
+        "rate": "9600"
+    }
+}

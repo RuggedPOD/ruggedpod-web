@@ -1,0 +1,14 @@
+#!/bin/bash
+
+device=$1
+baudrate=$2
+
+#
+# Kill existing screen process locking the serial port
+#
+kill -9 $(lsof ${device} | awk '/screen/{print $2}')
+
+#
+# Run a new screen
+#
+screen ${device} ${baudrate}

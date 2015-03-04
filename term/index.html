@@ -1,0 +1,42 @@
+<!doctype html>
+
+<html>
+
+<body>
+    <div id="serial-terminal">
+        <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="/term.js"></script>
+        <script type="text/javascript">
+        ;(function() {
+          window.onload = function() {
+            var socket = io.connect();
+            socket.on('connect', function() {
+              var term = new Terminal({
+                cols: 120,
+                rows: 40,
+                useStyle: true,
+                screenKeys: true,
+                cursorBlink: true
+              });
+
+              term.on('data', function(data) {
+                socket.emit('data', data);
+              });
+
+              term.open(document.body);
+
+              socket.on('data', function(data) {
+                term.write(data);
+              });
+
+              socket.on('disconnect', function() {
+                term.destroy();
+              });
+            });
+          };
+        }).call(this);
+        </script>
+    </div>
+</body>
+
+</html>

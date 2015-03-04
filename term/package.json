@@ -1,0 +1,13 @@
+{
+  "name": "testterm",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "4.12.2",
+    "pty.js": "0.2.5",
+    "socket.io": "1.3.5",
+    "term.js": "0.0.4"
+  },
+  "scripts": {
+    "start": "node run.js"
+  }
+}

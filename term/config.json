@@ -4,7 +4,7 @@
     },
     "term": {
         "cols": 80,
-        "rows": 30
+        "rows": 24
     },
     "screen": {
         "cmd": "./screen-mock",

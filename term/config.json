@@ -1,6 +1,6 @@
 {
     "http": {
-        "port": 7000
+        "port": 9000
     },
     "term": {
         "cols": 80,

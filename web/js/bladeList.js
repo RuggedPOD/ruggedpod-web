@@ -3,7 +3,7 @@ define(['ractive', 'client', 'notification'], function(ractive, client, notifica
     ractive.on({
         'all-pumps-on': function (event) {
             client.get({
-                name: 'SetAllPumpsOn',
+                name: 'SetAllBladesOilPumpOn',
                 error: function (error) {
                     notification.showError('Unable to start pumps');
                 },
@@ -14,7 +14,7 @@ define(['ractive', 'client', 'notification'], function(ractive, client, notifica
         },
         'all-pumps-off': function (event) {
             client.get({
-                name: 'SetAllPumpsOff',
+                name: 'SetAllBladesOilPumpOff',
                 error: function (error) {
                     notification.showError('Unable to stop pumps');
                 },

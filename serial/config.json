@@ -7,7 +7,7 @@
         "rows": 24
     },
     "screen": {
-        "cmd": "./screen-mock",
+        "cmd": "./screen-safe",
         "device": "/dev/tty.usbmodem1411",
         "rate": "9600"
     }

@@ -7,13 +7,15 @@ require.config({
 
 define('ractive', ['Ractive',
                    'text!../templates/index',
-                   'text!../templates/bladeList.html'], function(Ractive, indexTpl, bladeListTpl){
+                   'text!../templates/bladeList.html',
+                   'text!../templates/serialTerminal.html'], function(Ractive, indexTpl, bladeListTpl, serialTerminalTpl){
 
     return new Ractive({
         el: 'container',
         template: indexTpl,
         partials: {
-            bladeList: bladeListTpl
+            bladeList: bladeListTpl,
+            serialTerminal: serialTerminalTpl
         },
         data: {
             notification: null,

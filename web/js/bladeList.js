@@ -80,6 +80,7 @@ define(['ractive', 'client', 'notification'], function(ractive, client, notifica
             notification.showInfo('Not yet implemented');
         },
         'serial-port-open-terminal': function (event, id) {
+            ractive.set('page', 'serialTerminal');
             notification.showInfo('Not yet implemented');
         }
     });

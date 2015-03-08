@@ -1,3 +1,6 @@
 {{# page === 'bladeList' }}
   {{>bladeList}}
 {{/}}
+{{# page === 'serialTerminal' }}
+  {{>serialTerminal}}
+{{/}}

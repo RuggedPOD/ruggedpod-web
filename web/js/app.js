@@ -6,7 +6,7 @@ require.config({
 });
 
 define('ractive', ['Ractive',
-                   'text!../templates/index',
+                   'text!../templates/index.html',
                    'text!../templates/bladeList.html',
                    'text!../templates/serialTerminal.html'], function(Ractive, indexTpl, bladeListTpl, serialTerminalTpl){
 

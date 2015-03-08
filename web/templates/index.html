@@ -1,0 +1,14 @@
+<div class="row navbar-fixed-top notification-container">
+    {{#if notification !== null }}
+    <div class="alert alert-{{notification.severity}} text-center" role="alert">
+        <span class="glyphicon {{notification.icon}}"></span> {{notification.text}}
+    </div>
+    {{/if}}
+</div>
+
+{{# page === 'bladeList' }}
+  {{>bladeList}}
+{{/}}
+{{# page === 'serialTerminal' }}
+  {{>serialTerminal}}
+{{/}}

@@ -80,8 +80,18 @@ define(['ractive', 'client', 'notification'], function(ractive, client, notifica
             notification.showInfo('Not yet implemented');
         },
         'serial-port-open-terminal': function (event, id) {
-            ractive.set('page', 'serialTerminal');
-            notification.showInfo('Not yet implemented');
+            client.get({
+                name: 'StartBladeSerialSession',
+                params: {
+                    bladeId: id
+                },
+                error: function (error) {
+                    notification.showError('Unable to open the serial terminal for blade' + id);
+                },
+                success: function(data) {
+                    ractive.set('page', 'serialTerminal');
+                }
+            });
         }
     });
 

@@ -8,6 +8,11 @@ The console allows you to control the 4 blades presents in the RuggedPOD.
 
 [![RuggedPOD Web Console](doc/screenshot.png)](doc/screenshot.png)
 
+An emulated VT100 terminal allows you to connect to the serial port of each
+blade.
+
+[![RuggedPOD Web Serial terminal](doc/screenshot-serial-console.png)](doc/screenshot-serial-console.png)
+
 ## Contribute
 
 The easyest way to setup your development is to use [Vagrant](https://www.vagrantup.com/). It will automatically create a virtual machine provision it with everything that is needed to run the

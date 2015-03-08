@@ -1,18 +1,25 @@
 <div class="row" style="margin-bottom: 25px">
     <div class="col-md-2">
-
+        <div class="row text-center" style="margin-bottom: 30px">
+            <form action="/">
+                <button class="btn btn-sm btn-warning" type="submit">&lt;&lt; Back</button>
+            </form>
+        </div>
     </div>
     <div class="col-md-8">
-        <button class="btn btn-sm btn-default" on-click="serial-port-open-terminal:{{id}}">Serial blade 1</button>
-        <button class="btn btn-sm btn-info" on-click="serial-port-open-terminal:{{id}}">Serial blade 2</button>
-        <button class="btn btn-sm btn-default" on-click="serial-port-open-terminal:{{id}}">Serial blade 3</button>
-        <button class="btn btn-sm btn-default" on-click="serial-port-open-terminal:{{id}}">Serial blede 4</button>
+        {{#each blades:i}}
+        <button
+            class="btn btn-sm {{# currentBladeId === i+1 }}btn-info{{/}} {{# currentBladeId !== i+1 }}btn-default{{/}}"
+            on-click="serial-port-open-terminal:{{i+1}}"
+            style="margin-right: 10px">Serial blade {{i+1}}</button>
+        {{/each}}
     </div>
 </div>
 
 
 <div class="row">
     <div class="col-md-2">
+
         <div class="row text-center" style="margin-bottom: 30px">
             <div id="gauge-power-current-blade" class="blade-gauge"></div>
         </div>
@@ -32,13 +39,13 @@
                     <div class="panel-heading text-center">State</div>
                     <div class="panel-body text-center">
                         <div class="row" style="margin-bottom: 10px;">
-                            <button class="btn btn-sm btn-success" on-click="all-blades-on-off-short">On / Off Short</button>
+                            <button class="btn btn-sm btn-success" on-click="blade-on-off-short:{{currentBladeId}}">On / Off Short</button>
                         </div>
                         <div class="row" style="margin-bottom: 10px;">
-                            <button class="btn btn-sm btn-danger" on-click="all-blades-on-off-long">On / Off Long</button>
+                            <button class="btn btn-sm btn-danger" on-click="blade-on-off-long:{{currentBladeId}}">On / Off Long</button>
                         </div>
                         <div class="row">
-                            <button class="btn btn-sm btn-primary" on-click="all-blades-reset">Reset</button>
+                            <button class="btn btn-sm btn-primary" on-click="blade-reset:{{currentBladeId}}">Reset</button>
                         </div>
                     </div>
                 </div>

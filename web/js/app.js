@@ -19,6 +19,7 @@ define('ractive', ['Ractive',
         },
         data: {
             notification: null,
+            currentBladeId: null,
             blades: [
                 {
                     id: 1
@@ -37,6 +38,73 @@ define('ractive', ['Ractive',
     });
 });
 
-require(['ractive', 'bladeList'], function(ractive, bladeList) {
-    ractive.set('page', 'bladeList');
+define('hasher', [], function() {
+
+    return hasher;
+})
+
+define('app',
+       ['ractive', 'hasher', 'bladeList', 'serialTerminal'],
+       function(ractive, hasher, bladeList, serialTerminal) {
+
+    var modules = {
+        'bladeList': bladeList,
+        'serialTerminal': serialTerminal
+    }
+
+    function parseHash(hash) {
+        var i = hash.indexOf('?');
+        var url;
+        if (i === -1) {
+            url = hash;
+        }
+        else {
+            url = hash.substring(0, i);
+        }
+
+        var params = {};
+        var paramList = hash.substring(i+1, hash.length).split('&');
+        for (var n = 0 ; n < paramList.length ; n++) {
+            var param = paramList[n];
+            i = param.indexOf('=');
+            if (i === -1) {
+                params[param] = param;
+            }
+            else {
+                params[param.substring(0, i)] = param.substring(i+1, params.length);
+            }
+        }
+
+        return {
+            url: url,
+            params: params
+        }
+    }
+
+    function handleChanges(newHash, oldHash){
+        if (oldHash !== undefined && oldHash !== '') {
+            var fragment = parseHash(newHash);
+            modules[fragment.url].finalize(fragment.params);
+        }
+        if (newHash !== undefined) {
+            if (newHash === '') {
+                hasher.setHash('bladeList');
+            }
+            else {
+                var fragment = parseHash(newHash);
+                ractive.set('page', fragment.url);
+                modules[fragment.url].initialize(fragment.params);
+            }
+        }
+    }
+
+    hasher.changed.add(handleChanges);
+    hasher.initialized.add(handleChanges);
+    hasher.init();
+
+});
+
+require(['app'], function(app) {
+
+
 });

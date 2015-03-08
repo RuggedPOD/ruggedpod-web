@@ -1,4 +1,4 @@
-define(['ractive', 'client', 'notification'], function(ractive, client, notification){
+define(['ractive', 'hasher', 'client', 'notification'], function(ractive, hasher, client, notification) {
 
     ractive.on({
         'all-pumps-on': function (event) {
@@ -89,10 +89,24 @@ define(['ractive', 'client', 'notification'], function(ractive, client, notifica
                     notification.showError('Unable to open the serial terminal for blade' + id);
                 },
                 success: function(data) {
-                    ractive.set('page', 'serialTerminal');
+                    hasher.setHash('serialTerminal?bladeId=' + id);
+                    location.reload();
                 }
             });
         }
     });
+
+    function initialize(params) {
+
+    }
+
+    function finalize(params) {
+
+    }
+
+    return {
+        initialize: initialize,
+        finalize: finalize
+    }
 
 });

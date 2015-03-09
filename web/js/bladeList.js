@@ -1,4 +1,6 @@
-define(['ractive', 'hasher', 'client', 'notification'], function(ractive, hasher, client, notification) {
+define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractive, hasher, gauge, client, notification) {
+
+    var powerGaugeRefresherId;
 
     ractive.on({
         'all-pumps-on': function (event) {
@@ -96,11 +98,38 @@ define(['ractive', 'hasher', 'client', 'notification'], function(ractive, hasher
     });
 
     function initialize(params) {
+        var blades = ractive.get('blades');
+        var powerGauges = {};
+        var powerGaugeCumulative = gauge.createCumulativePowerGauge('gauge-power-all');
+
+        for (var i = 0 ; i < blades.length ; i++) {
+            powerGauges[blades[i].id] = gauge.createPowerGauge('gauge-power-' + blades[i].id);
+        }
+
+        powerGaugeRefresherId = setInterval(function () {
+            updatePowerBladesData();
+            var cumulativePower = 0;
+            for (var i = 0 ; i < blades.length ; i++) {
+                powerGauges[blades[i].id].refresh(blades[i].power);
+                cumulativePower += blades[i].power
+            }
+            powerGaugeCumulative.refresh(cumulativePower);
+        }, 1000);
 
     }
 
-    function finalize(params) {
+    function updatePowerBladesData() {
+        var blades = ractive.get('blades');
 
+        // TODO Replace by a real call API
+        var delta = [-10, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 10];
+        for (var i = 0 ; i < blades.length ; i++) {
+            blades[i].power = 125 + Math.floor(Math.random() * delta.length);
+        }
+    }
+
+    function finalize(params) {
+        clearInterval(powerGaugeRefresherId);
     }
 
     return {

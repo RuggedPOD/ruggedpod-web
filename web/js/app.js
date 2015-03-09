@@ -22,16 +22,20 @@ define('ractive', ['Ractive',
             currentBladeId: null,
             blades: [
                 {
-                    id: 1
+                    id: 1,
+                    power: 0
                 },
                 {
-                    id: 2
+                    id: 2,
+                    power: 0
                 },
                 {
-                    id: 3
+                    id: 3,
+                    power: 0
                 },
                 {
-                    id: 4
+                    id: 4,
+                    power: 0
                 }
             ]
         }

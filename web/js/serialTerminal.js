@@ -36,6 +36,7 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
 
     function finalize() {
         clearInterval(powerGaugeRefresherId);
+        $('#gauge-power-current-blade').empty();
         powerGauge = undefined
     }
 

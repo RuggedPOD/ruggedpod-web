@@ -90,7 +90,6 @@ define(['ractive', 'hasher', 'client', 'notification'], function(ractive, hasher
                 },
                 success: function(data) {
                     hasher.setHash('serialTerminal?bladeId=' + id);
-                    location.reload();
                 }
             });
         }

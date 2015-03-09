@@ -103,7 +103,9 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
         var powerGaugeCumulative = gauge.createCumulativePowerGauge('gauge-power-all');
 
         for (var i = 0 ; i < blades.length ; i++) {
-            powerGauges[blades[i].id] = gauge.createPowerGauge('gauge-power-' + blades[i].id);
+            if (powerGauges[blades[i].id] === undefined) {
+                powerGauges[blades[i].id] = gauge.createPowerGauge('gauge-power-' + blades[i].id);
+            }
         }
 
         powerGaugeRefresherId = setInterval(function () {

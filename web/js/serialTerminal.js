@@ -1,4 +1,10 @@
-define(['ractive', 'client', 'notification'], function(ractive, client, notification) {
+define(['ractive', 'hasher', 'client', 'notification'], function(ractive, hasher, client, notification) {
+
+    ractive.on({
+        'goto-blade-list': function (event) {
+            hasher.setHash('bladeList');
+        }
+    });
 
     function reloadSerialTerminal() {
         var iframeId = $('#serial-terminal-iframe')[0];

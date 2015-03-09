@@ -48,7 +48,15 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
             });
         },
         'all-blades-reset': function (event) {
-            notification.showInfo('Not yet implemented');
+            client.get({
+                name: 'SetAllBladesReset',
+                error: function (error) {
+                    notification.showError('Unable to reset all blades');
+                },
+                success: function(data) {
+                    notification.showSuccess('Successfully reset all blades');
+                }
+            });
         },
         'blade-on-off-short': function (event, id) {
             client.get({
@@ -79,7 +87,18 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
             });
         },
         'blade-reset': function (event, id) {
-            notification.showInfo('Not yet implemented');
+            client.get({
+                name: 'SetBladeReset',
+                params: {
+                    bladeId: id
+                },
+                error: function (error) {
+                    notification.showError('Unable to reset blade ' + id);
+                },
+                success: function(data) {
+                    notification.showSuccess('Successfully reset blade ' + id);
+                }
+            });
         },
         'serial-port-open-terminal': function (event, id) {
             client.get({

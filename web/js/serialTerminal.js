@@ -16,13 +16,8 @@ define(['ractive', 'hasher', 'client', 'notification'], function(ractive, hasher
         reloadSerialTerminal();
     }
 
-    function finalize(params) {
-
-    }
-
     return {
-        initialize: initialize,
-        finalize: finalize
+        initialize: initialize
     }
 
 });

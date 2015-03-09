@@ -83,8 +83,11 @@ define('app',
 
     function handleChanges(newHash, oldHash){
         if (oldHash !== undefined && oldHash !== '') {
-            var fragment = parseHash(newHash);
-            modules[fragment.url].finalize(fragment.params);
+            var fragment = parseHash(oldHash);
+            var finalize = modules[fragment.url].finalize;
+            if (typeof finalize == 'function') {
+                finalize(fragment.params);
+            }
         }
         if (newHash !== undefined) {
             if (newHash === '') {
@@ -93,7 +96,10 @@ define('app',
             else {
                 var fragment = parseHash(newHash);
                 ractive.set('page', fragment.url);
-                modules[fragment.url].initialize(fragment.params);
+                var initialize = modules[fragment.url].initialize;
+                if (typeof initialize == 'function') {
+                    initialize(fragment.params);
+                }
             }
         }
     }

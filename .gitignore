@@ -1,3 +1,4 @@
 web/packages/
 *.swp
 .vagrant/
+node_modules

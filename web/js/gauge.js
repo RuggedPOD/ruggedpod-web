@@ -22,6 +22,6 @@ define(function() {
     return {
         createPowerGauge: createPowerGauge,
         createCumulativePowerGauge: createCumulativePowerGauge
-    }
+    };
 
 });

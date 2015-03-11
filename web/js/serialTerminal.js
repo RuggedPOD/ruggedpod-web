@@ -15,7 +15,7 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
     }
 
     function initialize(params) {
-        ractive.set('currentBladeId', parseInt(params['bladeId']))
+        ractive.set('currentBladeId', parseInt(params.bladeId));
         reloadSerialTerminal();
         initializePowerGauge();
     }
@@ -37,12 +37,12 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
     function finalize() {
         clearInterval(powerGaugeRefresherId);
         $('#gauge-power-current-blade').empty();
-        powerGauge = undefined
+        powerGauge = undefined;
     }
 
     return {
         initialize: initialize,
         finalize: finalize
-    }
+    };
 
 });

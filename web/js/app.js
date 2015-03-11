@@ -45,7 +45,7 @@ define('ractive', ['Ractive',
 define('hasher', [], function() {
 
     return hasher;
-})
+});
 
 define('app',
        ['ractive', 'hasher', 'bladeList', 'serialTerminal'],
@@ -54,7 +54,7 @@ define('app',
     var modules = {
         'bladeList': bladeList,
         'serialTerminal': serialTerminal
-    }
+    };
 
     function parseHash(hash) {
         var i = hash.indexOf('?');
@@ -82,12 +82,13 @@ define('app',
         return {
             url: url,
             params: params
-        }
+        };
     }
 
     function handleChanges(newHash, oldHash){
+        var fragment;
         if (oldHash !== undefined && oldHash !== '') {
-            var fragment = parseHash(oldHash);
+            fragment = parseHash(oldHash);
             var finalize = modules[fragment.url].finalize;
             if (typeof finalize == 'function') {
                 finalize(fragment.params);
@@ -98,7 +99,7 @@ define('app',
                 hasher.setHash('bladeList');
             }
             else {
-                var fragment = parseHash(newHash);
+                fragment = parseHash(newHash);
                 ractive.set('page', fragment.url);
                 var initialize = modules[fragment.url].initialize;
                 if (typeof initialize == 'function') {

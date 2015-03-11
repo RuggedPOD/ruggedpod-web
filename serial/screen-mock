@@ -1,0 +1,28 @@
+#!/bin/bash
+
+echo "################################################"
+echo "#                                              #"
+echo "#  I'm not a real serial terminal, i'm a mock  #"
+echo "#                                              #"
+echo "################################################"
+echo ""
+
+echo -n '$ '
+
+while read line
+do
+  [ -z ${line} ] && {
+      echo -n '$ '
+      continue
+  }
+  [[ "${line}" = "exit" || "${line}" = "quit" ]] && {
+      echo ""
+      echo "See ya !"
+      echo ""
+      break
+  }
+  echo ""
+  echo "I don't care bro, i'm just a mock you know..."
+  echo ""
+  echo -n '$ '
+done < /dev/stdin

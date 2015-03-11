@@ -1,0 +1,70 @@
+<!doctype html>
+
+<html>
+
+<head>
+    <style id="term-style">
+    .terminal {
+        float: left;
+        border: #000000 solid 10px;
+        font-family: "DejaVu Sans Mono", "Liberation Mono", monospace;
+        font-size: 14px;
+        color: #f0f0f0;
+        background: #000000;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+    }
+
+    .terminal > div > span {
+        text-decoration: none !important;
+        padding-top: 7px;
+    }
+
+    .terminal > div {
+        padding-top: 7px;
+    }
+
+    .terminal-cursor {
+        color: #000000;
+        background: #f0f0f0;
+    }
+    </style>
+</head>
+
+<body>
+    <script type="text/javascript" src="/serial/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/serial/node_modules/term.js/src/term.js"></script>
+    <script type="text/javascript">
+        ;(function() {
+          window.onload = function() {
+            var socket = io.connect();
+            socket.on('connect', function() {
+              var term = new Terminal({
+                cols: 80,
+                rows: 24,
+                useStyle: true,
+                screenKeys: true,
+                cursorBlink: true
+              });
+
+              term.on('data', function(data) {
+                socket.emit('data', data);
+              });
+
+              term.open(document.body);
+
+              socket.on('data', function(data) {
+                term.write(data);
+              });
+
+              socket.on('disconnect', function() {
+                term.destroy();
+              });
+            });
+          };
+        }).call(this);
+    </script>
+</body>
+
+</html>

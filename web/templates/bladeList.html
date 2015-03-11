@@ -1,13 +1,4 @@
-<div class="row navbar-fixed-top notification-container">
-    {{#if notification !== null }}
-    <div class="alert alert-{{notification.severity}} text-center" role="alert">
-        <span class="glyphicon {{notification.icon}}"></span> {{notification.text}}
-    </div>
-    {{/if}}
-</div>
-
 <div class="row">
-
     <div class="col-md-10 main-container">
         <div class="blade-list-container">
             {{#each blades:i}}
@@ -37,45 +28,13 @@
                     </div>
                 </div>
             </div>
-
-            <script>
-                var init{{id}} = 125
-                var delta{{id}} = [-10, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 10];
-
-                var g{{id}} = new JustGage({
-                  id: "gauge-power-{{id}}",
-                  value: init{{id}},
-                  min: 0,
-                  max: 200,
-                  title: "Power (W)",
-                  levelColors: ['#aaa']
-                });
-
-                setInterval(function () {
-                    var rand = Math.floor(Math.random() * delta{{id}}.length);
-                    console.log(rand);
-                    g{{id}}.refresh(init{{id}} + delta{{id}}[rand]);
-                }, 1000);
-
-            </script>
             {{/each}}
         </div>
     </div>
-
     <div class="col-md-2">
         <div class="row text-center" style="margin-bottom: 30px">
             <div id="gauge-power-all" class="blade-gauge"></div>
         </div>
-        <script>
-            new JustGage({
-              id: "gauge-power-all",
-              value: 578,
-              min: 0,
-              max: 800,
-              title: "Cumulative power (W)",
-              levelColors: ['#aaa']
-            });
-        </script>
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">

@@ -24,6 +24,7 @@ pip install -r mock-requirements.txt
 curl -sSL https://deb.nodesource.com/setup | sudo bash -
 sudo apt-get install -y git nodejs build-essential
 sudo npm install -g bower
+sudo npm install -g grunt-cli
 
 cd /vagrant
 sudo rm -rf web/packages

@@ -1,24 +1,22 @@
 {
   "name": "ruggedpod-web",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "This is a management console built on top of the [RuggedPOD API](https://github.com/RuggedPOD/ruggedpod-api).",
   "main": "Gruntfile.js",
   "directories": {
     "doc": "doc"
   },
   "dependencies": {
-    "grunt": "0.4.5",
-    "grunt-contrib-jshint": "0.11.0",
-    "grunt-contrib-watch": "0.6.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "grunt": "0.4.5",
+    "grunt-contrib-jshint": "0.11.0"
+  },
   "scripts": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/RuggedPOD/ruggedpod-web.git"
   },
-  "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/RuggedPOD/ruggedpod-web/issues"
   },

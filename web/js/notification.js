@@ -4,13 +4,13 @@ define(['ractive', 'utils'], function(ractive, utils) {
         var id = utils.generateID();
         var icon;
         if (severity === 'info') {
-            icon = 'glyphicon-info-sign'
+            icon = 'glyphicon-info-sign';
         }
         else if (severity === 'success') {
-            icon = 'glyphicon-ok-sign'
+            icon = 'glyphicon-ok-sign';
         }
         else if (severity === 'danger') {
-            icon = 'glyphicon-remove-sign'
+            icon = 'glyphicon-remove-sign';
         }
         else {
             return;
@@ -46,6 +46,6 @@ define(['ractive', 'utils'], function(ractive, utils) {
         showInfo: showInfo,
         showError: showError,
         showSuccess: showSuccess
-    }
+    };
 
-})
+});

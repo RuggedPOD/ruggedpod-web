@@ -132,7 +132,7 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
             var cumulativePower = 0;
             for (var i = 0 ; i < blades.length ; i++) {
                 powerGauges[blades[i].id].refresh(blades[i].power);
-                cumulativePower += blades[i].power
+                cumulativePower += blades[i].power;
             }
             powerGaugeCumulative.refresh(cumulativePower);
         }, 1000);
@@ -156,6 +156,6 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
     return {
         initialize: initialize,
         finalize: finalize
-    }
+    };
 
 });

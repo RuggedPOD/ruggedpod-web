@@ -15,11 +15,12 @@ define(function () {
             else {
                 data[name] = value;
             }
-        };
+        }
 
         // element attributes
         var c, cn;
-        for (c = 0; cn = node.attributes[c]; c++) {
+        for (c = 0 ; c < node.attributes.length ; c++) {
+            cn = node.attributes[c];
             if (cn.name.match("^xmlns:?")) {
                 // Ignore namespaces.
                 continue;
@@ -28,8 +29,9 @@ define(function () {
         }
 
         // child elements
-        for (c = 0; cn = node.childNodes[c]; c++) {
-            if (cn.nodeType == 1) {
+        for (c = 0 ; c < node.childNodes.length ; c++) {
+            cn = node.childNodes[c];
+            if (cn.nodeType === 1) {
                 if (cn.childNodes.length == 1 && cn.firstChild.nodeType == 3) {
                     // text value
                     add(cn.nodeName, cn.firstChild.nodeValue);
@@ -37,7 +39,7 @@ define(function () {
                 else {
                     // sub-object
                     var objectNode = xml2object(cn);
-                    if (Object.keys(objectNode).length == 0) {
+                    if (Object.keys(objectNode).length === 0) {
                         add(cn.nodeName, null);
                     } else {
                         add(cn.nodeName, xml2object(cn));
@@ -50,31 +52,31 @@ define(function () {
     }
 
     function buildUrl(opts) {
-        var url = '/admin/' + opts['name'];
+        var url = '/admin/' + opts.name;
 
-        if (_.isUndefined(opts['params']) || opts['params'] === null) {
+        if (_.isUndefined(opts.params) || opts.params === null) {
             return url;
         }
 
-        if (!_.isObject(opts['params'])) {
-            opts['error']('"params" field must be an object', null);
+        if (!_.isObject(opts.params)) {
+            opts.error('"params" field must be an object', null);
             return url;
         }
 
-        if (_.isEmpty(opts['params'])) {
+        if (_.isEmpty(opts.params)) {
             return url;
         }
 
         url += '?';
         var isFirst = true;
-        for (key in opts['params']) {
+        for (var key in opts.params) {
             if (isFirst) {
                 isFirst = false;
             }
             else {
                 url += '&';
             }
-            url += key + '=' + opts['params'][key];
+            url += key + '=' + opts.params[key];
         }
 
         return url;
@@ -82,8 +84,8 @@ define(function () {
 
     function get(opts) {
         if (_.isUndefined(opts.name) || opts.name === '' || opts.name === null) {
-            if (!_.isUndefined(opts['error'])) {
-                opts['error']('"name" field is not defined', null);
+            if (!_.isUndefined(opts.error)) {
+                opts.error('"name" field is not defined', null);
             }
             return;
         }
@@ -91,13 +93,13 @@ define(function () {
         $.ajax({
             error: function (jqXHR, status, error) {
                 if ("error" in opts) {
-                    opts['error'](error, status);
+                    opts.error(error, status);
                 }
             },
             success: function (data, status, jqXHR) {
                 var resp = xml2object(data.childNodes[0]);
                 if ('success' in opts) {
-                    opts['success'](resp, status);
+                    opts.success(resp, status);
                 }
             },
             dataType: 'xml',

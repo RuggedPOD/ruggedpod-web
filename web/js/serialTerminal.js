@@ -24,13 +24,19 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
         if (powerGauge === undefined) {
             powerGauge = gauge.createPowerGauge('gauge-power-current-blade');
         }
-
         powerGaugeRefresherId = setInterval(function () {
-            // TODO Replace by a real call API
-            var delta = [-10, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 10];
-            var power = 125 + Math.floor(Math.random() * delta.length);
-
-            powerGauge.refresh(power);
+            var blades = ractive.get('blades');
+            client.get({
+                name: 'GetPowerConsumption',
+                params: {
+                    bladeId: ractive.data.currentBladeId
+                },
+                error: function (error) {
+                },
+                success: function(data) {
+                    powerGauge.refresh(parseInt(data.powerConsumption));
+                }
+            });
         }, 1000);
     }
 

@@ -41,7 +41,7 @@ sudo tee /etc/rc.local > /dev/null << EOL
 
 service apache2 restart
 cd /opt/ruggedpod-api
-env/bin/python server.py -m >> /var/log/ruggedpod-api.log 2>&1 &
+env/bin/python ruggedpod-api/server.py >> /var/log/ruggedpod-api.log 2>&1 &
 cd /vagrant/serial
 npm start >> /var/log/ruggedpod-serial-terminal.log 2>&1 &
 EOL

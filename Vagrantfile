@@ -12,7 +12,7 @@ sudo rm -f /etc/apache2/ports.conf /etc/apache2/sites-enabled/*
 sudo ln -s /vagrant/apache/ports.conf /etc/apache2/ports.conf
 sudo ln -s /vagrant/apache/ruggedpod-vhost.conf /etc/apache2/sites-enabled/ruggedpod-vhost.conf
 
-sudo apt-get install -y python-dev python-pip libxml2-dev libxslt1-dev zlib1g-dev
+sudo apt-get install -y python-dev python-pip libxml2-dev libxslt1-dev zlib1g-dev libffi-dev libssl-dev
 sudo pip install virtualenv
 
 cd /opt/ruggedpod-api

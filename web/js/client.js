@@ -92,7 +92,11 @@ define(function () {
 
         $.ajax({
             error: function (jqXHR, status, error) {
-                if ("error" in opts) {
+                if (jqXHR.status === 401) {
+                    $.removeCookie('X-Auth-Token', { path: '/' });
+                    window.location.replace('/');
+                }
+                else if ("error" in opts) {
                     opts.error(error, status);
                 }
             },

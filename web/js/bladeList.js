@@ -141,12 +141,16 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
 
     function updatePowerBladesData() {
         var blades = ractive.get('blades');
-
-        // TODO Replace by a real call API
-        var delta = [-10, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 10];
-        for (var i = 0 ; i < blades.length ; i++) {
-            blades[i].power = 125 + Math.floor(Math.random() * delta.length);
-        }
+        client.get({
+            name: 'GetAllPowerConsumption',
+            error: function (error) {
+            },
+            success: function(data) {
+                for (var i = 0 ; i < blades.length ; i++) {
+                    blades[i].power = parseInt(data.PowerConsumptionResponse[i].powerConsumption);
+                }
+            }
+        });
     }
 
     function finalize(params) {

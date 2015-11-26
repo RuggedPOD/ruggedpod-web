@@ -106,6 +106,11 @@ define(function () {
                     opts.success(resp, status);
                 }
             },
+            complete: function (jqXHR, status) {
+                if ("complete" in opts) {
+                    opts.complete(status);
+                }
+            },
             dataType: 'xml',
             type: 'GET',
             url: buildUrl(opts)

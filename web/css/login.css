@@ -46,3 +46,14 @@ body {
 .form-signin input[type="password"] {
     margin-bottom: 15px;
 }
+
+.error-container {
+    margin-top: 10px;
+    margin-bottom: 31px;
+    color: #bb0000;
+    font-size: 120%;
+}
+
+.error-input {
+    border-color: #bb0000;
+}

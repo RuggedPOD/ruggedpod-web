@@ -18,9 +18,28 @@
                 var username = $("#inputUsername").val();
                 var password = $("#inputPassword").val()
 
+                $("#buttonSignin").addClass('disabled');
+
                 $.ajax({
                     error: function (jqXHR, status, error) {
-                        window.location.replace('/')
+                        if (jqXHR.status !== 401) {
+                            window.location.replace('/error.html');
+                            return;
+                        }
+
+                        var taskId = setInterval(function(){
+                            $("#inputUsername").toggleClass("error-input");
+                            $("#inputPassword").toggleClass("error-input");
+                        },200);
+
+                        setTimeout(function() {
+                            window.clearInterval(taskId);
+                            $("#inputUsername").removeClass("error-input");
+                            $("#inputPassword").removeClass("error-input");
+                            $("#inputPassword").val("");
+                            $("#buttonSignin").removeClass('disabled');
+                            $("#inputUsername").select();
+                        }, 1000);
                     },
                     success: function (data, status, jqXHR) {
                         window.location.replace('/')
@@ -65,6 +84,7 @@
 
         $("#inputPassword").keyup(function(event) {
             if (event.which === 13) {
+                $("#buttonSignin").focus();
                 $("#buttonSignin").click();
             }
         });

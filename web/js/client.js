@@ -94,6 +94,7 @@ define(function () {
             error: function (jqXHR, status, error) {
                 if (jqXHR.status === 401) {
                     $.removeCookie('X-Auth-Token', { path: '/' });
+                    $.removeCookie('X-Auth-Username', { path: '/' });
                     window.location.replace('/');
                 }
                 else if ("error" in opts) {

@@ -16,6 +16,7 @@
     <script>
         function logout() {
             $.removeCookie('X-Auth-Token', { path: '/' });
+            $.removeCookie('X-Auth-Username', { path: '/' });
             window.location.replace('/')
         }
 
@@ -37,7 +38,9 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            role="button" aria-haspopup="true" aria-expanded="false">
-                            admin <span class="caret"></span></a>
+                            <span id="username-container"></span>
+                            <span class="caret"></span>
+                        </a>
                         <ul class="dropdown-menu">
                             <li><a href="javascript:logout()">Logout</a></li>
                         </ul>
@@ -50,6 +53,10 @@
     <div class="container" id="container">
 
     </div>
+
+    <script>
+        $('#username-container').empty().append($.cookie('X-Auth-Username'));
+    </script>
 
     <script src="packages/underscore/underscore-min.js"></script>
     <script src="packages/bootstrap/dist/js/bootstrap.min.js"></script>

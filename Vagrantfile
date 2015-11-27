@@ -19,6 +19,7 @@ cd /opt/ruggedpod-api
 rm -rf env
 virtualenv env
 source env/bin/activate
+pip install -r test-requirements.txt
 pip install -r mock-requirements.txt
 
 curl -sSL https://deb.nodesource.com/setup | sudo bash -

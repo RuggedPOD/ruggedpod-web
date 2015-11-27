@@ -25,15 +25,15 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading text-center">State</div>
-                    <div class="panel-body text-center">
+                    <div id="blade-button-{{currentBladeId}}" class="panel-body text-center">
                         <div class="row" style="margin-bottom: 10px;">
-                            <button class="btn btn-sm btn-success" on-click="blade-on-off-short:{{currentBladeId}}">On / Off Short</button>
+                            <button id="blade-on-off-short-{{currentBladeId}}" class="btn btn-sm btn-success" on-click="blade-on-off-short:{{currentBladeId}}">On / Off Short</button>
                         </div>
                         <div class="row" style="margin-bottom: 10px;">
-                            <button class="btn btn-sm btn-danger" on-click="blade-on-off-long:{{currentBladeId}}">On / Off Long</button>
+                            <button id="blade-on-off-long-{{currentBladeId}}" class="btn btn-sm btn-danger" on-click="blade-on-off-long:{{currentBladeId}}">On / Off Long</button>
                         </div>
                         <div class="row">
-                            <button class="btn btn-sm btn-primary" on-click="blade-reset:{{currentBladeId}}">Reset</button>
+                            <button id="blade-reset-{{currentBladeId}}" class="btn btn-sm btn-primary" on-click="blade-reset:{{currentBladeId}}">Reset</button>
                         </div>
                     </div>
                 </div>

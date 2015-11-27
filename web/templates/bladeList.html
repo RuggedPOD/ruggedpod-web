@@ -12,10 +12,10 @@
                 <div class="col-md-5">
                     <div class="panel panel-default">
                         <div class="panel-heading text-center">State</div>
-                        <div class="panel-body text-center">
-                            <button class="btn btn-sm btn-success" on-click="blade-on-off-short:{{id}}">On / Off Short</button>
-                            <button class="btn btn-sm btn-danger" on-click="blade-on-off-long:{{id}}">On / Off Long</button>
-                            <button class="btn btn-sm btn-primary" on-click="blade-reset:{{id}}">Reset</button>
+                        <div id="blade-button-{{id}}" class="panel-body text-center">
+                            <button id="blade-on-off-short-{{id}}" class="btn btn-sm btn-success" on-click="blade-on-off-short:{{id}}">On / Off Short</button>
+                            <button id="blade-on-off-long-{{id}}" class="btn btn-sm btn-danger" on-click="blade-on-off-long:{{id}}">On / Off Long</button>
+                            <button id="blade-reset-{{id}}" class="btn btn-sm btn-primary" on-click="blade-reset:{{id}}">Reset</button>
                         </div>
                     </div>
                 </div>
@@ -39,15 +39,15 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading text-center">All blades state</div>
-                    <div class="panel-body text-center">
+                    <div id="all-blades-button" class="panel-body text-center">
                         <div class="row" style="margin-bottom: 10px;">
-                            <button class="btn btn-sm btn-success" on-click="all-blades-on-off-short">On / Off Short</button>
+                            <button id="all-blade-on-off-short" class="btn btn-sm btn-success" on-click="all-blades-on-off-short">On / Off Short</button>
                         </div>
                         <div class="row" style="margin-bottom: 10px;">
-                            <button class="btn btn-sm btn-danger" on-click="all-blades-on-off-long">On / Off Long</button>
+                            <button id="all-blade-on-off-long" class="btn btn-sm btn-danger" on-click="all-blades-on-off-long">On / Off Long</button>
                         </div>
                         <div class="row">
-                            <button class="btn btn-sm btn-primary" on-click="all-blades-reset">Reset</button>
+                            <button id="all-blade-reset" class="btn btn-sm btn-primary" on-click="all-blades-reset">Reset</button>
                         </div>
                     </div>
                 </div>

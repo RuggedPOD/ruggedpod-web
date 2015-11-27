@@ -26,6 +26,7 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
             });
         },
         'all-blades-on-off-short': function (event) {
+            var savedSourceContent = beforeBladeAction(event);
             client.get({
                 name: 'SetAllBladesShortOnOff',
                 error: function (error) {
@@ -33,10 +34,14 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
                 },
                 success: function(data) {
                     notification.showSuccess('Successfully sent a short press button on all blades');
+                },
+                complete: function(status) {
+                    afterBladeAction(event, savedSourceContent);
                 }
             });
         },
         'all-blades-on-off-long': function (event) {
+            var savedSourceContent = beforeBladeAction(event);
             client.get({
                 name: 'SetAllBladesLongOnOff',
                 error: function (error) {
@@ -44,10 +49,14 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
                 },
                 success: function(data) {
                     notification.showSuccess('Successfully sent a long press button on all blades');
+                },
+                complete: function(status) {
+                    afterBladeAction(event, savedSourceContent);
                 }
             });
         },
         'all-blades-reset': function (event) {
+            var savedSourceContent = beforeBladeAction(event);
             client.get({
                 name: 'SetAllBladesReset',
                 error: function (error) {
@@ -55,10 +64,14 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
                 },
                 success: function(data) {
                     notification.showSuccess('Successfully reset all blades');
+                },
+                complete: function(status) {
+                    afterBladeAction(event, savedSourceContent);
                 }
             });
         },
         'blade-on-off-short': function (event, id) {
+            var savedSourceContent = beforeBladeAction(event, id);
             client.get({
                 name: 'SetBladeShortOnOff',
                 params: {
@@ -69,10 +82,14 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
                 },
                 success: function(data) {
                     notification.showSuccess('Successfully sent a short press button on blade ' + id);
+                },
+                complete: function(status) {
+                    afterBladeAction(event, savedSourceContent, id);
                 }
             });
         },
         'blade-on-off-long': function (event, id) {
+            var savedSourceContent = beforeBladeAction(event, id);
             client.get({
                 name: 'SetBladeLongOnOff',
                 params: {
@@ -83,10 +100,14 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
                 },
                 success: function(data) {
                     notification.showSuccess('Successfully sent a long press button on blade ' + id);
+                },
+                complete: function(status) {
+                    afterBladeAction(event, savedSourceContent, id);
                 }
             });
         },
         'blade-reset': function (event, id) {
+            var savedSourceContent = beforeBladeAction(event, id);
             client.get({
                 name: 'SetBladeReset',
                 params: {
@@ -97,6 +118,9 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
                 },
                 success: function(data) {
                     notification.showSuccess('Successfully reset blade ' + id);
+                },
+                complete: function(status) {
+                    afterBladeAction(event, savedSourceContent, id);
                 }
             });
         },
@@ -115,6 +139,48 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
             });
         }
     });
+
+    function beforeBladeAction(event, bladeId) {
+        var source = $('#' + event.node.id);
+        var savedContent = source.contents();
+        source.empty().append('<img src="/img/loading.gif" />');
+        _toggleButtonsActivation(bladeId, false);
+        return savedContent;
+    }
+
+    function afterBladeAction(event, savedSourceContent, bladeId) {
+        var source = $('#' + event.node.id);
+        source.empty().append(savedSourceContent);
+        _toggleButtonsActivation(bladeId, true);
+    }
+
+    function _toggleButtonsActivation(bladeId, enabled) {
+        var bladeIdStart;
+        var bladeIdEnd;
+
+        if (bladeId === undefined) {
+            bladeIdStart = 1;
+            bladeIdEnd = 4;
+        }
+        else {
+            bladeIdStart = bladeId;
+            bladeIdEnd = bladeId;
+        }
+
+        var toggleDisabledClass = function(i, element) {
+            if (enabled) {
+                $(element).removeClass('disabled');
+            }
+            else {
+                $(element).addClass('disabled');
+            }
+        };
+
+        for (var id = bladeIdStart ; id <= bladeIdEnd ; id++) {
+            $('#blade-button-' + id).find('button').each(toggleDisabledClass);
+        }
+        $("#all-blades-button").find("button").each(toggleDisabledClass);
+    }
 
     function initialize(params) {
         var blades = ractive.get('blades');

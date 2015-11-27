@@ -33,7 +33,7 @@ bower install
 cd /vagrant/serial
 sudo chown -R vagrant: /home/vagrant/.npm
 sudo rm -rf node_modules
-npm install
+npm install --no-bin-links
 sed -i "s/screen-safe/screen-mock/" config.json
 
 sudo tee /etc/rc.local > /dev/null << EOL

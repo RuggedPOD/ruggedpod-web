@@ -15,14 +15,14 @@ body {
 }
 
 .blade-list-container {
-    border-right: solid 2px #ddd;
+    border-right: solid 5px #f1f1f1;
     padding-right: 50px;
 }
 
 .blade-container {
     margin-bottom: 25px;
     padding-bottom: 5px;
-    border-bottom: solid 2px #ddd;
+    border-bottom: solid 5px #f1f1f1;
 }
 
 .blade-gauge {

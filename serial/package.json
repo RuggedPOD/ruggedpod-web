@@ -1,6 +1,7 @@
 {
   "name": "ruggedpod-web-serial-terminal",
   "version": "0.0.1",
+  "license" : "GPL-3.0+",
   "dependencies": {
     "express": "4.12.2",
     "log4js": "0.6.22",

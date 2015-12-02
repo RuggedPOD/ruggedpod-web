@@ -41,3 +41,7 @@ $ vagrant up
 A few minutes later your virtual machine will be up and running with all the needed material.
 
 The web console should be available on [http://localhost:8000](http://localhost:8000).
+
+## License
+
+See the LICENSE file for license rights and limitations (GPL v3).

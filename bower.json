@@ -1,6 +1,7 @@
 {
   "name": "ruggedpod-web",
   "version": "0.0.1",
+  "license": "GPL-3.0+",
   "dependencies": {
     "ractive": "0.6.1",
     "jquery": "1.11.2",

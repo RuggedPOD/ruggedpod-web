@@ -1,6 +1,7 @@
 {
   "name": "ruggedpod-web",
   "version": "0.0.1",
+  "license": "GPL-3.0+",
   "description": "This is a management console built on top of the [RuggedPOD API](https://github.com/RuggedPOD/ruggedpod-api).",
   "main": "Gruntfile.js",
   "directories": {

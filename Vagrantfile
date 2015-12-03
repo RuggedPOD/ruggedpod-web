@@ -6,23 +6,34 @@ set -ex
 
 sudo apt-get update
 
-sudo apt-get install -y apache2
+sudo apt-get install -y apache2 apache2-dev python-dev python-pip libxml2-dev \
+                        libxslt1-dev zlib1g-dev libffi-dev libssl-dev git
+
+mod_wsgi_version=4.4.21
+cd /tmp
+wget https://github.com/GrahamDumpleton/mod_wsgi/archive/${mod_wsgi_version}.tar.gz
+tar xvzf ${mod_wsgi_version}.tar.gz
+cd mod_wsgi-${mod_wsgi_version}
+./configure && make && sudo make install
+cd
+rm -rf /tmp/mod_wsgi-${mod_wsgi_version}
+sudo bash -c 'echo "LoadModule wsgi_module /usr/lib/apache2/modules/mod_wsgi.so" > /etc/apache2/mods-available/wsgi.load'
+
 sudo a2enmod proxy_http
 sudo a2enmod rewrite
 sudo a2enmod proxy_wstunnel
+sudo a2enmod wsgi
+
 sudo rm -f /etc/apache2/ports.conf /etc/apache2/sites-enabled/*
 sudo ln -s /vagrant/apache/ports.conf /etc/apache2/ports.conf
 sudo ln -s /vagrant/apache/ruggedpod-vhost.conf /etc/apache2/sites-enabled/ruggedpod-vhost.conf
 
-sudo apt-get install -y python-dev python-pip libxml2-dev libxslt1-dev zlib1g-dev libffi-dev libssl-dev
-sudo pip install virtualenv
-
 cd /opt/ruggedpod-api
-rm -rf env
-virtualenv env
-source env/bin/activate
-pip install -r test-requirements.txt
-pip install -r mock-requirements.txt
+sudo pip install -r test-requirements.txt
+sudo pip install -e .
+sudo pip uninstall -y rpi.gpio
+
+sudo bash -c 'echo "from ruggedpod_api.server import app as application" > /var/www/ruggedpod.wsgi'
 
 curl -sSL https://deb.nodesource.com/setup | sudo bash -
 sudo apt-get install -y git nodejs build-essential
@@ -42,16 +53,13 @@ sed -i "s/screen-safe/screen-mock/" config.json
 sudo tee /etc/rc.local > /dev/null << EOL
 #!/bin/bash
 
-service apache2 restart
-cd /opt/ruggedpod-api
-env/bin/python ruggedpod-api/server.py >> /var/log/ruggedpod-api.log 2>&1 &
 cd /vagrant/serial
 npm start >> /var/log/ruggedpod-serial-terminal.log 2>&1 &
+service apache2 restart
 EOL
 
 sudo chmod a+x /etc/rc.local
 sudo /etc/rc.local
-
 SCRIPT
 
 Vagrant.configure('2') do |config|

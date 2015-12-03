@@ -20,6 +20,7 @@
 define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractive, hasher, gauge, client, notification) {
 
     var powerGaugeRefresherId;
+    var bladeActionOngoingCount = 0;
 
     ractive.on({
         'all-pumps-on': function (event) {
@@ -163,6 +164,7 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
         var source = $('#' + event.node.id);
         var savedContent = source.contents();
         source.empty().append('<img src="/img/loading.gif" />');
+        bladeActionOngoingCount++;
         _toggleButtonsActivation(bladeId, false);
         return savedContent;
     }
@@ -170,6 +172,7 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
     function afterBladeAction(event, savedSourceContent, bladeId) {
         var source = $('#' + event.node.id);
         source.empty().append(savedSourceContent);
+        bladeActionOngoingCount--;
         _toggleButtonsActivation(bladeId, true);
     }
 
@@ -186,7 +189,7 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
             bladeIdEnd = bladeId;
         }
 
-        var toggleDisabledClass = function(i, element) {
+        var toggleBladeDisabledClass = function(i, element) {
             if (enabled) {
                 $(element).removeClass('disabled');
             }
@@ -195,10 +198,21 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
             }
         };
 
+        var toggleAllBladesDisabledClass = function(i, element) {
+            if (enabled) {
+                if (bladeActionOngoingCount === 0) {
+                    $(element).removeClass('disabled');
+                }
+            }
+            else {
+                $(element).addClass('disabled');
+            }
+        };
+
         for (var id = bladeIdStart ; id <= bladeIdEnd ; id++) {
-            $('#blade-button-' + id).find('button').each(toggleDisabledClass);
+            $('#blade-button-' + id).find('button').each(toggleBladeDisabledClass);
         }
-        $("#all-blades-button").find("button").each(toggleDisabledClass);
+        $("#all-blades-button").find("button").each(toggleAllBladesDisabledClass);
     }
 
     function initialize(params) {

@@ -21,6 +21,11 @@ body {
     padding-top: 90px;
 }
 
+.beta {
+    margin-left: 5px;
+    color: #aaa;
+}
+
 .panel-heading {
     padding: 3px 0px;
 }

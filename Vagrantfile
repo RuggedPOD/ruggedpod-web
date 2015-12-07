@@ -22,7 +22,13 @@ sudo bash -c 'echo "LoadModule wsgi_module /usr/lib/apache2/modules/mod_wsgi.so"
 sudo a2enmod proxy_http
 sudo a2enmod rewrite
 sudo a2enmod proxy_wstunnel
+sudo a2enmod ssl
 sudo a2enmod wsgi
+
+cert=/etc/ssl/certs/ruggedpod
+sudo openssl req -nodes -newkey rsa:2048 -keyout ${cert}.key -out ${cert}.csr \
+                 -subj "/C=FR/ST=Paris/L=Paris/O=OCP/OU=RuggedPOD/CN=admin.ruggedpod"
+sudo openssl x509 -req -days 365 -in ${cert}.csr -signkey ${cert}.key -out ${cert}.crt
 
 sudo rm -f /etc/apache2/ports.conf /etc/apache2/sites-enabled/*
 sudo ln -s /vagrant/apache/ports.conf /etc/apache2/ports.conf
@@ -70,6 +76,8 @@ Vagrant.configure('2') do |config|
   end
 
   config.vm.network "forwarded_port", guest: 80, host: 8000
+  config.vm.network "forwarded_port", guest: 443, host: 8443
+
   config.vm.synced_folder 'web', '/var/www/ruggedpod'
   config.vm.synced_folder '../ruggedpod-api', "/opt/ruggedpod-api"
   config.vm.provision 'shell', inline: $script, privileged: false

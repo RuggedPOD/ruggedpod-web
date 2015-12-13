@@ -25,9 +25,44 @@
     {{/if}}
 </div>
 
-{{# page === 'bladeList' }}
-  {{>bladeList}}
-{{/}}
-{{# page === 'serialTerminal' }}
-  {{>serialTerminal}}
-{{/}}
+<div class="row">
+    <div class="col-sm-3 col-md-2 sidebar">
+        <ul id="side-menu" class="nav nav-sidebar">
+            <li id="menuitem-pod" on-click="goto-page:pod">
+                <a href="javascript:"><span class="glyphicon glyphicon-folder-close" aria-hidden="true"></span>POD</a>
+            </li>
+            <li id="menuitem-blades" on-click="goto-page:bladeList">
+                <a href="javascript:"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>Blades</a>
+            </li>
+            <li id="menuitem-configuration" on-click="goto-page:configuration">
+                <a href="javascript:"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>Configuration</a>
+            </li>
+            <li id="menuitem-users" on-click="goto-page:users">
+                <a href="javascript:"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Users</a>
+            </li>
+            <li id="menuitem-documentation" on-click="goto-page:documentation">
+                <a href="javascript:"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>Documentation</a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        {{# page === 'pod' }}
+            {{>pod}}
+        {{/}}
+        {{# page === 'bladeList' }}
+            {{>bladeList}}
+        {{/}}
+        {{# page === 'users' }}
+            {{>users}}
+        {{/}}
+        {{# page === 'configuration' }}
+            {{>configuration}}
+        {{/}}
+        {{# page === 'documentation' }}
+            {{>documentation}}
+        {{/}}
+        {{# page === 'serialTerminal' }}
+            {{>serialTerminal}}
+        {{/}}
+    </div>
+</div>

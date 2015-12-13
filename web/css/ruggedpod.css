@@ -18,7 +18,77 @@
  */
 
 body {
-    padding-top: 90px;
+    padding-top: 50px;
+}
+
+.navbar-fixed-top {
+    border: 0;
+}
+
+.sidebar {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .sidebar {
+        position: fixed;
+        top: 51px;
+        bottom: 0;
+        left: 0;
+        z-index: 1000;
+        display: block;
+        padding: 20px;
+        overflow-x: hidden;
+        overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+        background-color: #f5f5f5;
+        border-right: 1px solid #eee;
+        padding-top: 70px;
+    }
+}
+
+.nav-sidebar {
+    margin-right: -21px; /* 20px padding + 1px border */
+    margin-bottom: 20px;
+    margin-left: -20px;
+}
+
+.nav-sidebar > li > a {
+    color: #777;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+    color: #5FB404;
+    background-color: #ffffff;
+}
+
+.nav-sidebar > li .glyphicon {
+    margin-right: 10px;
+    font-size: 20px;
+}
+
+.nav-sidebar > li {
+    font-size: 15px;
+    padding-bottom: 15px;
+}
+
+.main {
+    padding: 20px;
+}
+
+@media (min-width: 768px) {
+    .main {
+        padding-right: 55px;
+        padding-left: 30px;
+        padding-top: 50px;
+    }
+}
+
+.main .page-header {
+    margin-top: 0;
 }
 
 .beta {
@@ -31,21 +101,94 @@ body {
 }
 
 .btn-sm {
-    width: 100px;
+    width: 70px;
+    height: 70px;
 }
 
 .notification-container {
     font-size: 16px
 }
 
-.blade-list-container {
+.btn-blade {
+    color: #777;
+    border: none;
+    background-color: #fcfcfc;
+    border-radius: 50%;
+    padding-top: 15px;
+}
+
+.btn-blade:hover {
+    background-color: #e4e4e4;
+}
+
+.page-container {
     padding-right: 25px;
+    padding-left: 40px;
+}
+
+.blade-container div .glyphicon {
+    font-size: 20px;
+}
+
+.btn-disabled .glyphicon {
+    color: #777 !important;
+}
+
+.btn-on-off-short,
+.btn-on-off-long,
+.btn-reset {
+    margin-right: 10px;
+}
+
+.btn-on-off-short-v,
+.btn-on-off-long-v,
+.btn-reset-v {
+    margin-bottom: 30px;
+    margin-left: 7px;
+}
+
+.btn-on-off-short .glyphicon {
+    color: #FF8000;
+}
+
+.btn-on-off-long .glyphicon {
+    color: #990000;
+}
+
+.btn-reset .glyphicon {
+    color: #000099;
+}
+
+.btn-console .glyphicon {
+    color: #3098B4;
+}
+
+.btn-edit {
+    background-color: #f1f1f1;
+    color: #666;
+}
+
+.btn-pumps-on .glyphicon {
+    color: #5FB404;
+}
+
+.btn-pumps-off .glyphicon {
+    color: #990000;
 }
 
 .blade-container {
+    padding-top: 10px;
     margin-bottom: 25px;
     padding-bottom: 5px;
-    border-bottom: solid 5px #f1f1f1;
+    background-color: #f1f1f1;
+    border-radius: 10px;
+}
+
+.blade-container-v {
+    margin-bottom: 25px;
+    padding-bottom: 5px;
+    background-color: #f1f1f1;
+    border-radius: 10px;
 }
 
 .all-blades-container {
@@ -57,4 +200,26 @@ body {
 .blade-gauge {
     width:200px;
     height:96px;
+    margin-left: -25px
+}
+
+.blade-number-label {
+    margin-left: 10px;
+    background-color: #5FB404;
+    border-radius: 50%;
+    font-weight: lighter;
+    font-size: 0.6em;
+}
+
+.section-title {
+    margin-top:-20px;
+    padding-left: 25px;
+    padding-right: 10px;
+    padding-bottom: 30px;
+    color: #777;
+    font-variant: small-caps;
+}
+
+.console-container {
+    margin-left: 30px;
 }

@@ -1,0 +1,69 @@
+<!--
+ * RuggedPOD management web console
+ *
+ * Copyright (C) 2015 Guillaume Giamarchi <guillaume.giamarchi@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<div class="row section-title">
+    <h4>pod</h4>
+    <hr/>
+</div>
+
+<div class="row">
+    <div class="page-container">
+
+        <div class="row alert-container" style="background-color: rgba(0, 147, 255, 0.14); color: #2F87B3; margin-bottom: 35px; padding: 10px; border-left: 5px solid #2F87B3; border-top-right-radius: 10px; border-bottom-right-radius: 10px;">
+            <strong>Be careful,</strong> power buttons bellow will act on all blades in the POD !
+        </div>
+
+        <div class="row blade-container">
+
+            <div class="col-md-3">
+                <div id="gauge-power-all" class="blade-gauge"></div>
+            </div>
+
+            <div class="col-md-5">
+                <div id="all-blade-button" class="panel-body text-center">
+                    <div id="all-blades-on-off-short" class="btn-blade btn-on-off-short btn btn-sm" on-click="all-blades-on-off-short">
+                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                        <div>1 s</div>
+                    </div>
+                    <div id="all-blade-on-off-long" class="btn-blade btn-on-off-long btn btn-sm" on-click="all-blades-on-off-long">
+                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                        <div>5 s</div>
+                    </div>
+                    <div id="all-blade-reset" class="btn-blade btn-reset btn btn-sm" on-click="all-blades-reset">
+                        <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+                        <div>Reset</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div id="all-blade-button" class="panel-body text-center">
+                    <div id="all-pumps-on" class="btn-blade btn-pumps-on btn btn-sm" on-click="all-pumps-on">
+                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                        <div style="font-size: 10px;">Pumps On</div>
+                    </div>
+                    <div id="all-pumps-off" class="btn-blade btn-pumps-off btn btn-sm" on-click="all-pumps-off">
+                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                        <div style="font-size: 10px;">Pumps Off</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

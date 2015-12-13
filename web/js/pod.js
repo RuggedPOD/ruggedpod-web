@@ -22,104 +22,91 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
     var powerGaugeRefresherId;
 
     ractive.on({
-        'blade-on-off-short': function (event, id) {
-            var savedSourceContent = beforeBladeAction(event, id);
+        'all-pumps-on': function (event) {
             client.get({
-                name: 'SetBladeShortOnOff',
-                params: {
-                    bladeId: id
-                },
+                name: 'SetAllBladesOilPumpOn',
                 error: function (error) {
-                    notification.showError('Unable to send a short press button on blade ' + id);
+                    notification.showError('Unable to start pumps');
                 },
                 success: function(data) {
-                    notification.showSuccess('Successfully sent a short press button on blade ' + id);
-                },
-                complete: function(status) {
-                    afterBladeAction(event, savedSourceContent, id);
+                    notification.showSuccess('Pumps has been successfully started');
                 }
             });
         },
-        'blade-on-off-long': function (event, id) {
-            var savedSourceContent = beforeBladeAction(event, id);
+        'all-pumps-off': function (event) {
             client.get({
-                name: 'SetBladeLongOnOff',
-                params: {
-                    bladeId: id
-                },
+                name: 'SetAllBladesOilPumpOff',
                 error: function (error) {
-                    notification.showError('Unable to send a long press button on blade ' + id);
+                    notification.showError('Unable to stop pumps');
                 },
                 success: function(data) {
-                    notification.showSuccess('Successfully sent a long press button on blade ' + id);
-                },
-                complete: function(status) {
-                    afterBladeAction(event, savedSourceContent, id);
+                    notification.showSuccess('Pumps has been successfully stopped');
                 }
             });
         },
-        'blade-reset': function (event, id) {
-            var savedSourceContent = beforeBladeAction(event, id);
+        'all-blades-on-off-short': function (event) {
+            var savedSourceContent = beforeBladeAction(event);
             client.get({
-                name: 'SetBladeReset',
-                params: {
-                    bladeId: id
-                },
+                name: 'SetAllBladesShortOnOff',
                 error: function (error) {
-                    notification.showError('Unable to reset blade ' + id);
+                    notification.showError('Unable to send a short press button on all blades');
                 },
                 success: function(data) {
-                    notification.showSuccess('Successfully reset blade ' + id);
+                    notification.showSuccess('Successfully sent a short press button on all blades');
                 },
                 complete: function(status) {
-                    afterBladeAction(event, savedSourceContent, id);
+                    afterBladeAction(event, savedSourceContent);
                 }
             });
         },
-        'serial-port-open-terminal': function (event, id) {
+        'all-blades-on-off-long': function (event) {
+            var savedSourceContent = beforeBladeAction(event);
             client.get({
-                name: 'StartBladeSerialSession',
-                params: {
-                    bladeId: id
-                },
+                name: 'SetAllBladesLongOnOff',
                 error: function (error) {
-                    notification.showError('Unable to open the serial terminal for blade' + id);
+                    notification.showError('Unable to send a long press button on all blades');
                 },
                 success: function(data) {
-                    hasher.setHash('serialTerminal?bladeId=' + id);
+                    notification.showSuccess('Successfully sent a long press button on all blades');
+                },
+                complete: function(status) {
+                    afterBladeAction(event, savedSourceContent);
+                }
+            });
+        },
+        'all-blades-reset': function (event) {
+            var savedSourceContent = beforeBladeAction(event);
+            client.get({
+                name: 'SetAllBladesReset',
+                error: function (error) {
+                    notification.showError('Unable to reset all blades');
+                },
+                success: function(data) {
+                    notification.showSuccess('Successfully reset all blades');
+                },
+                complete: function(status) {
+                    afterBladeAction(event, savedSourceContent);
                 }
             });
         }
     });
 
-    function beforeBladeAction(event, bladeId) {
+    function beforeBladeAction(event) {
         var source = $('#' + event.node.id);
         var savedContent = source.contents();
         source.empty().append('<img src="/img/loading.gif" width="40px"/>');
-        _toggleButtonsActivation(bladeId, false);
+        _toggleButtonsActivation(false);
         return savedContent;
     }
 
-    function afterBladeAction(event, savedSourceContent, bladeId) {
+    function afterBladeAction(event, savedSourceContent) {
         var source = $('#' + event.node.id);
         source.empty().append(savedSourceContent);
-        _toggleButtonsActivation(bladeId, true);
+        _toggleButtonsActivation(true);
     }
 
-    function _toggleButtonsActivation(bladeId, enabled) {
-        var bladeIdStart;
-        var bladeIdEnd;
-
-        if (bladeId === undefined) {
-            bladeIdStart = 1;
-            bladeIdEnd = 4;
-        }
-        else {
-            bladeIdStart = bladeId;
-            bladeIdEnd = bladeId;
-        }
-
-        var toggleDisabledClass = function(i, element) {
+    function _toggleButtonsActivation(enabled) {
+        $(".blade-container").find(".btn").each(function(i, element) {
             if (enabled) {
                 $(element).removeClass('disabled');
                 $(element).removeClass('btn-disabled');
@@ -128,30 +115,20 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
                 $(element).addClass('disabled');
                 $(element).addClass('btn-disabled');
             }
-        };
-
-        for (var id = bladeIdStart ; id <= bladeIdEnd ; id++) {
-            $('#blade-button-' + id).find('.btn').each(toggleDisabledClass);
-        }
+        });
     }
 
     function initialize(params) {
-        var blades = ractive.get('blades');
-        var powerGauges = {};
-
-        for (var i = 0 ; i < blades.length ; i++) {
-            if (powerGauges[blades[i].id] === undefined) {
-                powerGauges[blades[i].id] = gauge.createPowerGauge('gauge-power-' + blades[i].id);
-            }
-        }
-
+        var powerGaugeCumulative = gauge.createCumulativePowerGauge('gauge-power-all');
         powerGaugeRefresherId = setInterval(function () {
             updatePowerBladesData();
+            var blades = ractive.get('blades');
+            var cumulativePower = 0;
             for (var i = 0 ; i < blades.length ; i++) {
-                powerGauges[blades[i].id].refresh(blades[i].power);
+                cumulativePower += blades[i].power;
             }
+            powerGaugeCumulative.refresh(cumulativePower);
         }, 1000);
-
     }
 
     function updatePowerBladesData() {

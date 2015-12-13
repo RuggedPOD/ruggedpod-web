@@ -26,14 +26,23 @@ require.config({
 
 define('ractive', ['Ractive',
                    'text!../templates/index.html',
+                   'text!../templates/pod.html',
                    'text!../templates/bladeList.html',
-                   'text!../templates/serialTerminal.html'], function(Ractive, indexTpl, bladeListTpl, serialTerminalTpl){
+                   'text!../templates/users.html',
+                   'text!../templates/configuration.html',
+                   'text!../templates/documentation.html',
+                   'text!../templates/serialTerminal.html'],
+                   function(Ractive, indexTpl, podTpl, bladeListTpl, usersTpl, configurationTpl, documentationTpl, serialTerminalTpl){
 
     return new Ractive({
         el: 'container',
         template: indexTpl,
         partials: {
+            pod: podTpl,
             bladeList: bladeListTpl,
+            users: usersTpl,
+            configuration: configurationTpl,
+            documentation: documentationTpl,
             serialTerminal: serialTerminalTpl
         },
         data: {
@@ -42,18 +51,26 @@ define('ractive', ['Ractive',
             blades: [
                 {
                     id: 1,
+                    name: null,
+                    description: null,
                     power: 0
                 },
                 {
                     id: 2,
+                    name: null,
+                    description: null,
                     power: 0
                 },
                 {
                     id: 3,
+                    name: null,
+                    description: null,
                     power: 0
                 },
                 {
                     id: 4,
+                    name: null,
+                    description: null,
                     power: 0
                 }
             ]
@@ -67,11 +84,13 @@ define('hasher', [], function() {
 });
 
 define('app',
-       ['ractive', 'hasher', 'bladeList', 'serialTerminal'],
-       function(ractive, hasher, bladeList, serialTerminal) {
+       ['ractive', 'hasher', 'pod', 'bladeList', 'menu', 'serialTerminal'],
+       function(ractive, hasher, pod, bladeList, menu, serialTerminal) {
 
     var modules = {
+        'pod': pod,
         'bladeList': bladeList,
+        'menu': menu,
         'serialTerminal': serialTerminal
     };
 
@@ -106,25 +125,34 @@ define('app',
 
     function handleChanges(newHash, oldHash){
         var fragment;
+        var pageModule;
         if (oldHash !== undefined && oldHash !== '') {
+            if (oldHash === newHash) {
+                return;
+            }
             fragment = parseHash(oldHash);
-            var finalize = modules[fragment.url].finalize;
-            if (typeof finalize == 'function') {
-                finalize(fragment.params);
+            pageModule = modules[fragment.url];
+            if (pageModule !== undefined) {
+                var finalize = pageModule.finalize;
+                if (typeof finalize == 'function') {
+                    finalize(fragment.params);
+                }
             }
         }
         if (newHash !== undefined) {
             if (newHash === '') {
-                hasher.setHash('bladeList');
+                newHash = 'bladeList';
             }
-            else {
-                fragment = parseHash(newHash);
-                ractive.set('page', fragment.url);
-                var initialize = modules[fragment.url].initialize;
+            fragment = parseHash(newHash);
+            ractive.set('page', fragment.url);
+            pageModule = modules[fragment.url];
+            if (pageModule !== undefined) {
+                var initialize = pageModule.initialize;
                 if (typeof initialize == 'function') {
                     initialize(fragment.params);
                 }
             }
+            ractive.fire("refresh-sidemenu", null, fragment.url);
         }
     }
 

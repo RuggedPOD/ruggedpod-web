@@ -161,8 +161,15 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
             error: function (error) {
             },
             success: function(data) {
+                var blades = ractive.get('blades');
+                var bladeMap = {};
                 for (var i = 0 ; i < blades.length ; i++) {
-                    blades[i].power = parseInt(data.PowerConsumptionResponse[i].powerConsumption);
+                    bladeMap[blades[i].id] = blades[i];
+                }
+                var power = data.PowerConsumptionResponse;
+                for (i = 0 ; i < power.length ; i++) {
+                    var bladeId = power[i].bladeResponse.bladeNumber;
+                    bladeMap[bladeId].power = parseInt(power[i].powerConsumption);
                 }
             }
         });

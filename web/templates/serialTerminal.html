@@ -17,15 +17,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<div class="row section-title">
+<div class="section-title">
     <h4>blade {{currentBladeId}}</h4>
     <hr/>
 </div>
 
 <div class="row">
-    <div class="page-container">
     <div class="col-md-2 blade-container-v">
-        <div class="row text-center" style="margin-bottom: 30px">
+        <div class="row center-block" style="margin-bottom: 30px">
             <div id="gauge-power-current-blade" class="blade-gauge" style="margin-top: 20px"></div>
         </div>
         <div class="row">
@@ -47,7 +46,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-8 console-container">
+    <div class="col-md-8">
         <iframe id="serial-terminal-iframe"
                 width="710px"
                 height="580px"
@@ -55,6 +54,5 @@
                 frameborder="0"
                 marginwidth="0"
                 src="/serial"></iframe>
-    </div>
     </div>
 </div>

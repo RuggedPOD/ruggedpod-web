@@ -40,6 +40,7 @@ sudo pip install -e .
 sudo pip uninstall -y rpi.gpio
 
 sudo bash -c 'echo "from ruggedpod_api.server import app as application" > /var/www/ruggedpod.wsgi'
+sed -i "s/profile: production/profile: development/" conf.yaml
 
 curl -sSL https://deb.nodesource.com/setup | sudo bash -
 sudo apt-get install -y git nodejs build-essential

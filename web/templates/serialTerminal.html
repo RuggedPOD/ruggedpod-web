@@ -17,43 +17,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<div class="row" style="margin-bottom: 25px">
-    <div class="col-md-2">
-        <div class="row text-center" style="margin-bottom: 30px">
-            <button class="btn btn-sm btn-warning" on-click="goto-blade-list">&lt;&lt; Back</button>
-        </div>
-    </div>
-    <div class="col-md-8">
-        {{#each blades:i}}
-        <button
-            class="btn btn-sm {{# currentBladeId === i+1 }}btn-info{{/}} {{# currentBladeId !== i+1 }}btn-default{{/}}"
-            on-click="serial-port-open-terminal:{{i+1}}"
-            style="margin-right: 10px">Serial blade {{i+1}}</button>
-        {{/each}}
-    </div>
+<div class="section-title">
+    <h4>blade {{currentBladeId}}</h4>
+    <hr/>
 </div>
 
-
 <div class="row">
-    <div class="col-md-2">
-
-        <div class="row text-center" style="margin-bottom: 30px">
-            <div id="gauge-power-current-blade" class="blade-gauge"></div>
+    <div class="col-md-2 blade-container-v">
+        <div class="row center-block" style="margin-bottom: 30px">
+            <div id="gauge-power-current-blade" class="blade-gauge" style="margin-top: 20px"></div>
         </div>
         <div class="row">
             <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading text-center">State</div>
-                    <div id="blade-button-{{currentBladeId}}" class="panel-body text-center">
-                        <div class="row" style="margin-bottom: 10px;">
-                            <button id="blade-on-off-short-{{currentBladeId}}" class="btn btn-sm btn-success" on-click="blade-on-off-short:{{currentBladeId}}">On / Off Short</button>
-                        </div>
-                        <div class="row" style="margin-bottom: 10px;">
-                            <button id="blade-on-off-long-{{currentBladeId}}" class="btn btn-sm btn-danger" on-click="blade-on-off-long:{{currentBladeId}}">On / Off Long</button>
-                        </div>
-                        <div class="row">
-                            <button id="blade-reset-{{currentBladeId}}" class="btn btn-sm btn-primary" on-click="blade-reset:{{currentBladeId}}">Reset</button>
-                        </div>
+                <div id="blade-button-{{currentBladeId}}" class="panel-body text-center">
+                    <div id="blade-on-off-short-{{currentBladeId}}" class="btn-blade btn-on-off-short-v btn-on-off-short btn btn-sm" on-click="blade-on-off-short:{{currentBladeId}}">
+                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                        <div>1 s</div>
+                    </div>
+                    <div id="blade-on-off-long-{{currentBladeId}}" class="btn-blade btn-on-off-short-v btn-on-off-long btn btn-sm" on-click="blade-on-off-long:{{currentBladeId}}">
+                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                        <div>5 s</div>
+                    </div>
+                    <div id="blade-reset-{{currentBladeId}}" class="btn-blade btn-reset-v btn-reset btn btn-sm" on-click="blade-reset:{{currentBladeId}}">
+                        <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+                        <div>Reset</div>
                     </div>
                 </div>
             </div>

@@ -22,73 +22,6 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
     var powerGaugeRefresherId;
 
     ractive.on({
-        'all-pumps-on': function (event) {
-            client.get({
-                name: 'SetAllBladesOilPumpOn',
-                error: function (error) {
-                    notification.showError('Unable to start pumps');
-                },
-                success: function(data) {
-                    notification.showSuccess('Pumps has been successfully started');
-                }
-            });
-        },
-        'all-pumps-off': function (event) {
-            client.get({
-                name: 'SetAllBladesOilPumpOff',
-                error: function (error) {
-                    notification.showError('Unable to stop pumps');
-                },
-                success: function(data) {
-                    notification.showSuccess('Pumps has been successfully stopped');
-                }
-            });
-        },
-        'all-blades-on-off-short': function (event) {
-            var savedSourceContent = beforeBladeAction(event);
-            client.get({
-                name: 'SetAllBladesShortOnOff',
-                error: function (error) {
-                    notification.showError('Unable to send a short press button on all blades');
-                },
-                success: function(data) {
-                    notification.showSuccess('Successfully sent a short press button on all blades');
-                },
-                complete: function(status) {
-                    afterBladeAction(event, savedSourceContent);
-                }
-            });
-        },
-        'all-blades-on-off-long': function (event) {
-            var savedSourceContent = beforeBladeAction(event);
-            client.get({
-                name: 'SetAllBladesLongOnOff',
-                error: function (error) {
-                    notification.showError('Unable to send a long press button on all blades');
-                },
-                success: function(data) {
-                    notification.showSuccess('Successfully sent a long press button on all blades');
-                },
-                complete: function(status) {
-                    afterBladeAction(event, savedSourceContent);
-                }
-            });
-        },
-        'all-blades-reset': function (event) {
-            var savedSourceContent = beforeBladeAction(event);
-            client.get({
-                name: 'SetAllBladesReset',
-                error: function (error) {
-                    notification.showError('Unable to reset all blades');
-                },
-                success: function(data) {
-                    notification.showSuccess('Successfully reset all blades');
-                },
-                complete: function(status) {
-                    afterBladeAction(event, savedSourceContent);
-                }
-            });
-        },
         'blade-on-off-short': function (event, id) {
             var savedSourceContent = beforeBladeAction(event, id);
             client.get({
@@ -162,7 +95,7 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
     function beforeBladeAction(event, bladeId) {
         var source = $('#' + event.node.id);
         var savedContent = source.contents();
-        source.empty().append('<img src="/img/loading.gif" />');
+        source.empty().append('<img src="/img/loading.gif" width="40px"/>');
         _toggleButtonsActivation(bladeId, false);
         return savedContent;
     }
@@ -189,22 +122,22 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
         var toggleDisabledClass = function(i, element) {
             if (enabled) {
                 $(element).removeClass('disabled');
+                $(element).removeClass('btn-disabled');
             }
             else {
                 $(element).addClass('disabled');
+                $(element).addClass('btn-disabled');
             }
         };
 
         for (var id = bladeIdStart ; id <= bladeIdEnd ; id++) {
-            $('#blade-button-' + id).find('button').each(toggleDisabledClass);
+            $('#blade-button-' + id).find('.btn').each(toggleDisabledClass);
         }
-        $("#all-blades-button").find("button").each(toggleDisabledClass);
     }
 
     function initialize(params) {
         var blades = ractive.get('blades');
         var powerGauges = {};
-        var powerGaugeCumulative = gauge.createCumulativePowerGauge('gauge-power-all');
 
         for (var i = 0 ; i < blades.length ; i++) {
             if (powerGauges[blades[i].id] === undefined) {
@@ -214,12 +147,9 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
 
         powerGaugeRefresherId = setInterval(function () {
             updatePowerBladesData();
-            var cumulativePower = 0;
             for (var i = 0 ; i < blades.length ; i++) {
                 powerGauges[blades[i].id].refresh(blades[i].power);
-                cumulativePower += blades[i].power;
             }
-            powerGaugeCumulative.refresh(cumulativePower);
         }, 1000);
 
     }
@@ -231,8 +161,15 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
             error: function (error) {
             },
             success: function(data) {
+                var blades = ractive.get('blades');
+                var bladeMap = {};
                 for (var i = 0 ; i < blades.length ; i++) {
-                    blades[i].power = parseInt(data.PowerConsumptionResponse[i].powerConsumption);
+                    bladeMap[blades[i].id] = blades[i];
+                }
+                var power = data.PowerConsumptionResponse;
+                for (i = 0 ; i < power.length ; i++) {
+                    var bladeId = power[i].bladeResponse.bladeNumber;
+                    bladeMap[bladeId].power = parseInt(power[i].powerConsumption);
                 }
             }
         });

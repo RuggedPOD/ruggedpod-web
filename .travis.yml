@@ -12,3 +12,17 @@ script:
   - grunt
 
 sudo: false
+
+before_deploy:
+  - cd web
+  - tar cvzf ../ruggedpod-web.tar.gz *
+  - cd ..
+
+deploy:
+  provider: releases
+  api_key:
+    secure: VdzrJXmWjBukUHya8MJ4aCd7mTFgXnGQb6Ho6ofleAOjIJfQ+dRTUPd4aHdWwQIpikiDEI2w09VZ9CokpL3AyDsfbTiprkbEDz0lS1ehtqIrKTj1uVbdu0dN+9jymtmS8yjG1yV8KeAJXUifYtHQa8wGT42XNcQWrsO59T/Pi9c=
+  file: ruggedpod-web.tar.gz
+  skip_cleanup: true
+  on:
+    tags: true

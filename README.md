@@ -1,5 +1,7 @@
 # RuggedPOD Web Console
 
+[![Build Status](https://travis-ci.org/RuggedPOD/ruggedpod-web.svg?branch=master)](https://travis-ci.org/RuggedPOD/ruggedpod-web)
+
 This is a management console built on top of the [RuggedPOD API](https://github.com/RuggedPOD/ruggedpod-api).
 
 ## Overview

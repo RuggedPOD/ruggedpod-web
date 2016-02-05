@@ -1,0 +1,61 @@
+<!--
+ * RuggedPOD management web console
+ *
+ * Copyright (C) 2015 Guillaume Giamarchi <guillaume.giamarchi@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<div class="section-title">
+    <h4>add user</h4>
+    <hr/>
+</div>
+
+<div class="section-users" style="margin-top: 20px">
+    <form class="form-horizontal">
+        <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label" for="usernameInput">Username</label>
+            <div class="col-sm-8 col-lg-5">
+                <input class="form-control" type="text" id="usernameInput">
+            </div>
+        </div>
+        <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label" for="firstnameInput">Firstname</label>
+            <div class="col-sm-8 col-lg-5">
+                <input class="form-control" type="text" id="firstnameInput">
+            </div>
+        </div>
+        <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label" for="lastnameInput">Lastname</label>
+            <div class="col-sm-8 col-lg-5">
+                <input class="form-control" type="text" id="lastnameInput">
+            </div>
+        </div>
+        <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label" for="passwordInput">Password</label>
+            <div class="col-sm-3 col-lg-2">
+                <input class="form-control" type="password" id="passwordInput">
+            </div>
+            <label class="col-sm-2 col-lg-1 control-label" for="passwordConfirmInput">Confirm</label>
+            <div class="col-sm-3 col-lg-2">
+                <input class="form-control" type="password" id="passwordConfirmInput">
+            </div>
+        </div>
+        <div class="form-group form-group-lg" style="margin-top: 50px">
+            <div class="col-sm-offset-8 col-sm-2 col-lg-offset-5 col-lg-2">
+                <button id="userCreateButton" type="button" class="btn btn-primary" on-click="user-add-submit" style="width: 100%">Create</button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -17,7 +17,45 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['ractive', 'hasher'], function(ractive, hasher) {
+define(['ractive', 'hasher', 'client', 'notification'], function(ractive, hasher, client, notification) {
 
+    ractive.on({
+        'user-add': function(event) {
+            hasher.setHash('usersAdd');
+        },
+        'user-edit': function(event, id) {
+            notification.showInfo('Sorry, user modification is not yet implemented in this version');
+        },
+        'user-delete': function(event, id) {
+            client.http({
+                path: '/users/' + id,
+                method: 'DELETE',
+                error: function (error) {
+                    notification.showError('Unable to delete user');
+                },
+                success: function(data) {
+                    notification.showSuccess('User successfully deleted');
+                    initialize();
+                }
+            });
+        }
+    });
+
+    function initialize(params) {
+        client.http({
+            path: '/users',
+            method: 'GET',
+            error: function (error) {
+                notification.showError('Unable to retrieve user list from server');
+            },
+            success: function(data) {
+                ractive.set('users', data);
+            }
+        });
+    }
+
+    return {
+        initialize: initialize
+    };
 
 });

@@ -197,6 +197,14 @@ body {
     font-variant: small-caps;
 }
 
+.section-users {
+    margin-top:-20px;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-bottom: 30px;
+    color: #777;
+}
+
 .alert-container {
     margin-left: 25px;
     margin-right: 25px;
@@ -207,4 +215,8 @@ body {
     border-left: 5px solid #2F87B3;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
+}
+
+.error-input {
+    border-color: #bb0000;
 }

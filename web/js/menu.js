@@ -25,7 +25,8 @@ define(['ractive', 'hasher'], function(ractive, hasher) {
         "serialTerminal": "menuitem-blades",
         "configuration": "menuitem-configuration",
         "documentation": "menuitem-documentation",
-        "users": "menuitem-users"
+        "users": "menuitem-users",
+        "usersAdd": "menuitem-users"
     };
 
     refresh = function(fragment) {

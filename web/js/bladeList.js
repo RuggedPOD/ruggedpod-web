@@ -24,10 +24,11 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
     ractive.on({
         'blade-on-off-short': function (event, id) {
             var savedSourceContent = beforeBladeAction(event, id);
-            client.get({
-                name: 'SetBladeShortOnOff',
+            client.http({
+                path: '/blades/' + id + '/power',
+                method: 'PATCH',
                 params: {
-                    bladeId: id
+                    long: false
                 },
                 error: function (error) {
                     notification.showError('Unable to send a short press button on blade ' + id);
@@ -42,10 +43,11 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
         },
         'blade-on-off-long': function (event, id) {
             var savedSourceContent = beforeBladeAction(event, id);
-            client.get({
-                name: 'SetBladeLongOnOff',
+            client.http({
+                path: '/blades/' + id + '/power',
+                method: 'PATCH',
                 params: {
-                    bladeId: id
+                    long: true
                 },
                 error: function (error) {
                     notification.showError('Unable to send a long press button on blade ' + id);
@@ -60,11 +62,9 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
         },
         'blade-reset': function (event, id) {
             var savedSourceContent = beforeBladeAction(event, id);
-            client.get({
-                name: 'SetBladeReset',
-                params: {
-                    bladeId: id
-                },
+            client.http({
+                path: '/blades/' + id + '/reset',
+                method: 'PATCH',
                 error: function (error) {
                     notification.showError('Unable to reset blade ' + id);
                 },
@@ -77,11 +77,9 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
             });
         },
         'serial-port-open-terminal': function (event, id) {
-            client.get({
-                name: 'StartBladeSerialSession',
-                params: {
-                    bladeId: id
-                },
+            client.http({
+                path: '/blades/' + id + '/serial',
+                method: 'PATCH',
                 error: function (error) {
                     notification.showError('Unable to open the serial terminal for blade' + id);
                 },
@@ -156,8 +154,9 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
 
     function updatePowerBladesData() {
         var blades = ractive.get('blades');
-        client.get({
-            name: 'GetAllPowerConsumption',
+        client.http({
+            path: '/blades',
+            method: 'GET',
             error: function (error) {
             },
             success: function(data) {
@@ -166,10 +165,9 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
                 for (var i = 0 ; i < blades.length ; i++) {
                     bladeMap[blades[i].id] = blades[i];
                 }
-                var power = data.PowerConsumptionResponse;
-                for (i = 0 ; i < power.length ; i++) {
-                    var bladeId = power[i].bladeResponse.bladeNumber;
-                    bladeMap[bladeId].power = parseInt(power[i].powerConsumption);
+                for (i = 0 ; i < data.length ; i++) {
+                    var bladeId = data[i].id;
+                    bladeMap[bladeId].power = data[i].consumption;
                 }
             }
         });

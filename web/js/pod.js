@@ -23,31 +23,19 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
 
     ractive.on({
         'all-pumps-on': function (event) {
-            client.get({
-                name: 'SetAllBladesOilPumpOn',
-                error: function (error) {
-                    notification.showError('Unable to start pumps');
-                },
-                success: function(data) {
-                    notification.showSuccess('Pumps has been successfully started');
-                }
-            });
+            notification.showInfo('Pumps management is not available in this version');
         },
         'all-pumps-off': function (event) {
-            client.get({
-                name: 'SetAllBladesOilPumpOff',
-                error: function (error) {
-                    notification.showError('Unable to stop pumps');
-                },
-                success: function(data) {
-                    notification.showSuccess('Pumps has been successfully stopped');
-                }
-            });
+            notification.showInfo('Pumps management is not available in this version');
         },
         'all-blades-on-off-short': function (event) {
             var savedSourceContent = beforeBladeAction(event);
-            client.get({
-                name: 'SetAllBladesShortOnOff',
+            client.http({
+                path: '/blades/power',
+                method: 'PATCH',
+                params: {
+                    long: false
+                },
                 error: function (error) {
                     notification.showError('Unable to send a short press button on all blades');
                 },
@@ -61,8 +49,12 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
         },
         'all-blades-on-off-long': function (event) {
             var savedSourceContent = beforeBladeAction(event);
-            client.get({
-                name: 'SetAllBladesLongOnOff',
+            client.http({
+                path: '/blades/power',
+                method: 'PATCH',
+                params: {
+                    long: true
+                },
                 error: function (error) {
                     notification.showError('Unable to send a long press button on all blades');
                 },
@@ -76,8 +68,9 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
         },
         'all-blades-reset': function (event) {
             var savedSourceContent = beforeBladeAction(event);
-            client.get({
-                name: 'SetAllBladesReset',
+            client.http({
+                path: '/blades/reset',
+                method: 'PATCH',
                 error: function (error) {
                     notification.showError('Unable to reset all blades');
                 },
@@ -121,20 +114,25 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
     function initialize(params) {
         var powerGaugeCumulative = gauge.createCumulativePowerGauge('gauge-power-all');
         powerGaugeRefresherId = setInterval(function () {
-            updatePowerBladesData();
-            var blades = ractive.get('blades');
-            var cumulativePower = 0;
-            for (var i = 0 ; i < blades.length ; i++) {
-                cumulativePower += blades[i].power;
-            }
-            powerGaugeCumulative.refresh(cumulativePower);
+            client.http({
+                path: '/blades',
+                error: function (error) {
+                },
+                success: function(data) {
+                    cumulativePower = 0;
+                    for (var i = 0 ; i < data.length ; i++) {
+                        cumulativePower += data[i].consumption;
+                    }
+                    powerGaugeCumulative.refresh(cumulativePower);
+                }
+            });
         }, 1000);
     }
 
     function updatePowerBladesData() {
         var blades = ractive.get('blades');
-        client.get({
-            name: 'GetAllPowerConsumption',
+        client.http({
+            path: '/blades',
             error: function (error) {
             },
             success: function(data) {

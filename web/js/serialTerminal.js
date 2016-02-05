@@ -45,15 +45,13 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
         }
         powerGaugeRefresherId = setInterval(function () {
             var blades = ractive.get('blades');
-            client.get({
-                name: 'GetPowerConsumption',
-                params: {
-                    bladeId: ractive.data.currentBladeId
-                },
+            client.http({
+                path: '/blades/' + ractive.data.currentBladeId,
+                method: 'GET',
                 error: function (error) {
                 },
                 success: function(data) {
-                    powerGauge.refresh(parseInt(data.powerConsumption));
+                    powerGauge.refresh(parseInt(data.consumption));
                 }
             });
         }, 1000);

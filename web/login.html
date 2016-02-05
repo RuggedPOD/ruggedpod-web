@@ -64,7 +64,12 @@
                         window.location.replace('/')
                     },
                     type: 'POST',
-                    url: '/admin/token?username=' + username + '&password=' + password
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        username: username,
+                        password: password
+                    }),
+                    url: '/api/v2/tokens'
                 });
             }
 

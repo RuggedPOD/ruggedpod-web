@@ -19,59 +19,8 @@
 
 define(function () {
 
-    function xml2object(node) {
-
-        var	data = {};
-
-        // append a value
-        function add(name, value) {
-            if (data[name]) {
-                if (data[name].constructor != Array) {
-                    data[name] = [data[name]];
-                }
-                data[name][data[name].length] = value;
-            }
-            else {
-                data[name] = value;
-            }
-        }
-
-        // element attributes
-        var c, cn;
-        for (c = 0 ; c < node.attributes.length ; c++) {
-            cn = node.attributes[c];
-            if (cn.name.match("^xmlns:?")) {
-                // Ignore namespaces.
-                continue;
-            }
-            add('@' + cn.name, cn.value);
-        }
-
-        // child elements
-        for (c = 0 ; c < node.childNodes.length ; c++) {
-            cn = node.childNodes[c];
-            if (cn.nodeType === 1) {
-                if (cn.childNodes.length == 1 && cn.firstChild.nodeType == 3) {
-                    // text value
-                    add(cn.nodeName, cn.firstChild.nodeValue);
-                }
-                else {
-                    // sub-object
-                    var objectNode = xml2object(cn);
-                    if (Object.keys(objectNode).length === 0) {
-                        add(cn.nodeName, null);
-                    } else {
-                        add(cn.nodeName, xml2object(cn));
-                    }
-                }
-            }
-        }
-
-        return data;
-    }
-
     function buildUrl(opts) {
-        var url = '/admin/' + opts.name;
+        var url = '/api/v2' + opts.path;
 
         if (_.isUndefined(opts.params) || opts.params === null) {
             return url;
@@ -101,8 +50,8 @@ define(function () {
         return url;
     }
 
-    function get(opts) {
-        if (_.isUndefined(opts.name) || opts.name === '' || opts.name === null) {
+    function http(opts) {
+        if (_.isUndefined(opts.path) || opts.path === '' || opts.path === null) {
             if (!_.isUndefined(opts.error)) {
                 opts.error('"name" field is not defined', null);
             }
@@ -121,9 +70,8 @@ define(function () {
                 }
             },
             success: function (data, status, jqXHR) {
-                var resp = xml2object(data.childNodes[0]);
                 if ('success' in opts) {
-                    opts.success(resp, status);
+                    opts.success(data, status);
                 }
             },
             complete: function (jqXHR, status) {
@@ -131,14 +79,16 @@ define(function () {
                     opts.complete(status);
                 }
             },
-            dataType: 'xml',
-            type: 'GET',
+            contentType: 'application/json',
+            dataType: 'json',
+            type: opts.method,
+            data: opts.data,
             url: buildUrl(opts)
         });
     }
 
     return {
-        get: get
+        http: http
     };
 
 });

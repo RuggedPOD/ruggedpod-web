@@ -46,6 +46,9 @@ define('ractive', ['Ractive',
             configuration: configurationTpl,
             documentation: documentationTpl,
             serialTerminal: serialTerminalTpl
+        },
+        data: {
+            notification: null
         }
     });
 });

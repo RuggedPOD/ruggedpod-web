@@ -46,36 +46,6 @@ define('ractive', ['Ractive',
             configuration: configurationTpl,
             documentation: documentationTpl,
             serialTerminal: serialTerminalTpl
-        },
-        data: {
-            notification: null,
-            currentBladeId: null,
-            blades: [
-                {
-                    id: 1,
-                    name: null,
-                    description: null,
-                    power: 0
-                },
-                {
-                    id: 2,
-                    name: null,
-                    description: null,
-                    power: 0
-                },
-                {
-                    id: 3,
-                    name: null,
-                    description: null,
-                    power: 0
-                },
-                {
-                    id: 4,
-                    name: null,
-                    description: null,
-                    power: 0
-                }
-            ]
         }
     });
 });

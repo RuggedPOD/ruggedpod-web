@@ -137,43 +137,42 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
     }
 
     function initialize(params) {
-        var blades = ractive.get('blades');
+
         var powerGauges = {};
 
-        for (var i = 0 ; i < blades.length ; i++) {
-            if (powerGauges[blades[i].id] === undefined) {
-                powerGauges[blades[i].id] = gauge.createPowerGauge('gauge-power-' + blades[i].id);
-            }
-        }
-
-        powerGaugeRefresherId = setInterval(function () {
-            updatePowerBladesData();
+        var refresh = function(blades) {
+            ractive.set('blades', blades);
             for (var i = 0 ; i < blades.length ; i++) {
-                powerGauges[blades[i].id].refresh(blades[i].power);
+                if (powerGauges[blades[i].id] === undefined) {
+                    powerGauges[blades[i].id] = gauge.createPowerGauge('gauge-power-' + blades[i].id);
+                }
             }
-        }, 1000);
+            for (i = 0 ; i < blades.length ; i++) {
+                powerGauges[blades[i].id].refresh(blades[i].consumption);
+            }
+        };
 
-    }
-
-    function updatePowerBladesData() {
-        var blades = ractive.get('blades');
         client.http({
             path: '/blades',
             method: 'GET',
             error: function (error) {
+                notification.showError('Unable to retrieve blades information');
             },
-            success: function(data) {
-                var blades = ractive.get('blades');
-                var bladeMap = {};
-                for (var i = 0 ; i < blades.length ; i++) {
-                    bladeMap[blades[i].id] = blades[i];
-                }
-                for (i = 0 ; i < data.length ; i++) {
-                    var bladeId = data[i].id;
-                    bladeMap[bladeId].power = data[i].consumption;
-                }
+            success: function(blades) {
+                refresh(blades);
             }
         });
+
+        powerGaugeRefresherId = setInterval(function () {
+            client.http({
+                path: '/blades',
+                method: 'GET',
+                success: function(blades) {
+                    refresh(blades);
+                }
+            });
+        }, 2000);
+
     }
 
     function finalize(params) {

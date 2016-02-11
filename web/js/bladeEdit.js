@@ -42,7 +42,37 @@ define(['ractive', 'hasher', 'client', 'notification', 'form'], function(ractive
                     notification.showSuccess('Successfully saved blade ' + bladeId + ' information');
                 }
             });
-        }
+        },
+        'blade-build-submit': function (event) {
+            var blade = ractive.get("blade");
+            client.http({
+                path: '/blades/' + blade.id + '/build',
+                method: 'POST',
+                error: function (error) {
+                    notification.showError('Unable to enabled build mode for blade ' + blade.id);
+                },
+                success: function(data) {
+                    blade.building = true;
+                    ractive.set("blade", blade);
+                    notification.showSuccess('Successfully enabled build mode for blade ' + blade.id);
+                }
+            });
+        },
+        'blade-build-cancel': function (event) {
+            var blade = ractive.get("blade");
+            client.http({
+                path: '/blades/' + blade.id + '/build',
+                method: 'DELETE',
+                error: function (error) {
+                    notification.showError('Unable to cancel build for blade ' + blade.id);
+                },
+                success: function(data) {
+                    blade.building = false;
+                    ractive.set("blade", blade);
+                    notification.showSuccess('Successfully canceled build for blade ' + blade.id);
+                }
+            });
+        },
     });
 
     function initialize(params) {

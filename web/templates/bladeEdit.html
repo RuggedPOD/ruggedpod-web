@@ -48,7 +48,8 @@
         <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label" for="macaddressInput">MAC Address</label>
             <div class="col-sm-8 col-lg-5">
-                <input class="form-control" type="text" id="macaddressInput" value="{{ blade.mac_address }}">
+                <input class="form-control" type="text" id="macaddressInput" value="{{ blade.mac_address }}"
+                  {{#if blade.building}}disabled{{/if}}>
             </div>
         </div>
 
@@ -57,5 +58,50 @@
                 <button id="bladeSaveButton" type="button" class="btn btn-primary" on-click="blade-edit-submit" style="width: 100%">Save</button>
             </div>
         </div>
+    </form>
+</div>
+
+<div class="section-title">
+    <h4>blade operating system</h4>
+    <hr/>
+</div>
+
+{{#if blade.building}}
+<div class="row alert-container alert-container-warning">
+    <strong>Build state enabled,</strong> the operating system will be reinstalled on the next reboot. All data on the hard drive will be lost !
+</div>
+{{else}}
+<div class="row alert-container alert-container-info">
+    <strong>Be careful,</strong> triggering the build action will involve an operating system reinstall on the next reboot !
+</div>
+{{/if}}
+
+<div class="section-users" style="margin-top: 20px">
+    <form class="form-horizontal">
+        <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label" for="operatingsystemInput">Operating system</label>
+            <div class="col-sm-8 col-lg-5">
+                <input class="form-control" type="text" list="distrib" id="operatingsystemInput"
+                       value="Ubuntu 14.04 (Trusty)" {{#if blade.building}}disabled{{/if}}>
+                <datalist id="distrib">
+                    <!-- TODO Get an OS list from the server
+                              This requires the configuration API (not yet specified) -->
+                    <option>Ubuntu 14.04 (Trusty)</option>
+                </datalist>
+            </div>
+        </div>
+        {{#if blade.building}}
+        <div class="form-group form-group-lg" style="margin-top: 50px">
+            <div class="col-sm-offset-8 col-sm-2 col-lg-offset-5 col-lg-2">
+                <button id="bladeBuildButton" type="button" class="btn btn-danger" on-click="blade-build-cancel" style="width: 100%">Cancel</button>
+            </div>
+        </div>
+        {{else}}
+        <div class="form-group form-group-lg" style="margin-top: 50px">
+            <div class="col-sm-offset-8 col-sm-2 col-lg-offset-5 col-lg-2">
+                <button id="bladeBuildButton" type="button" class="btn btn-success" on-click="blade-build-submit" style="width: 100%">Build</button>
+            </div>
+        </div>
+        {{/if}}
     </form>
 </div>

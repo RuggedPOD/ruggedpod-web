@@ -77,7 +77,7 @@ define(['ractive', 'hasher', 'gauge', 'client', 'notification'], function(ractiv
             });
         },
         'blade-edit': function (event, id) {
-            notification.showInfo('Blade modification is not available in this version');
+            hasher.setHash('bladeEdit?bladeId=' + id);
         },
         'serial-port-open-terminal': function (event, id) {
             client.http({

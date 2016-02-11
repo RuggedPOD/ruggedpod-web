@@ -22,6 +22,7 @@ define(['ractive', 'hasher'], function(ractive, hasher) {
     var mapping = {
         "pod": "menuitem-pod",
         "bladeList": "menuitem-blades",
+        "bladeEdit": "menuitem-blades",
         "serialTerminal": "menuitem-blades",
         "configuration": "menuitem-configuration",
         "documentation": "menuitem-documentation",

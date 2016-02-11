@@ -28,12 +28,14 @@ define('ractive', ['Ractive',
                    'text!../templates/index.html',
                    'text!../templates/pod.html',
                    'text!../templates/bladeList.html',
+                   'text!../templates/bladeEdit.html',
                    'text!../templates/users.html',
                    'text!../templates/usersAdd.html',
                    'text!../templates/configuration.html',
                    'text!../templates/documentation.html',
                    'text!../templates/serialTerminal.html'],
-                   function(Ractive, indexTpl, podTpl, bladeListTpl, usersTpl, usersAddTpl, configurationTpl, documentationTpl, serialTerminalTpl){
+                   function(Ractive, indexTpl, podTpl, bladeListTpl, bladeEditTpl, usersTpl, usersAddTpl,
+                            configurationTpl, documentationTpl, serialTerminalTpl){
 
     return new Ractive({
         el: 'container',
@@ -41,6 +43,7 @@ define('ractive', ['Ractive',
         partials: {
             pod: podTpl,
             bladeList: bladeListTpl,
+            bladeEdit: bladeEditTpl,
             users: usersTpl,
             usersAdd: usersAddTpl,
             configuration: configurationTpl,
@@ -59,12 +62,13 @@ define('hasher', [], function() {
 });
 
 define('app',
-       ['ractive', 'hasher', 'pod', 'bladeList', 'users', 'usersAdd', 'menu', 'serialTerminal'],
-       function(ractive, hasher, pod, bladeList, users, usersAdd, menu, serialTerminal) {
+       ['ractive', 'hasher', 'pod', 'bladeList', 'bladeEdit', 'users', 'usersAdd', 'menu', 'serialTerminal'],
+       function(ractive, hasher, pod, bladeList, bladeEdit, users, usersAdd, menu, serialTerminal) {
 
     var modules = {
         'pod': pod,
         'bladeList': bladeList,
+        'bladeEdit': bladeEdit,
         'users': users,
         'usersAdd': usersAdd,
         'menu': menu,

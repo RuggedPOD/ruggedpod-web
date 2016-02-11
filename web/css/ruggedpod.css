@@ -209,12 +209,21 @@ body {
     margin-left: 25px;
     margin-right: 25px;
     margin-bottom: 35px;
-    background-color: rgba(0, 147, 255, 0.14);
-    color: #2F87B3;
     padding: 10px;
-    border-left: 5px solid #2F87B3;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
+}
+
+.alert-container-info {
+    background-color: rgba(0, 147, 255, 0.14);
+    color: #2F87B3;
+    border-left: 5px solid #2F87B3;
+}
+
+.alert-container-warning {
+    background-color: rgba(255, 230, 176, 0.14);
+    color: #db9500;
+    border-left: 5px solid #db9500;
 }
 
 .error-input {

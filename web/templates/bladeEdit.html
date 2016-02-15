@@ -53,6 +53,13 @@
             </div>
         </div>
 
+        <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label" for="ipaddressInput">IP Address</label>
+            <div class="col-sm-8 col-lg-5">
+                <input class="form-control" type="text" id="ipaddressInput" value="{{ blade.ip_address }}" disabled>
+            </div>
+        </div>
+
         <div class="form-group form-group-lg" style="margin-top: 50px">
             <div class="col-sm-offset-8 col-sm-2 col-lg-offset-5 col-lg-2">
                 <button id="bladeSaveButton" type="button" class="btn btn-primary" on-click="blade-edit-submit" style="width: 100%">Save</button>

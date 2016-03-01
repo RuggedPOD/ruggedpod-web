@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['ractive', 'hasher', 'client', 'notification'], function(ractive, hasher, client, notification) {
+define(['ractive', 'hasher', 'client', 'notification', 'form'], function(ractive, hasher, client, notification, form) {
 
     ractive.on({
         'user-add': function(event) {
@@ -31,6 +31,10 @@ define(['ractive', 'hasher', 'client', 'notification'], function(ractive, hasher
                 path: '/users/' + id,
                 method: 'DELETE',
                 error: function (error) {
+                    if (error === 'CONFLICT') {
+                        notification.showInfo('You are not allowed to delete yourself');
+                        return;
+                    }
                     notification.showError('Unable to delete user');
                 },
                 success: function(data) {

@@ -66,7 +66,7 @@ define(function () {
                     window.location.replace('/');
                 }
                 else if ("error" in opts) {
-                    opts.error(error, status);
+                    opts.error(error, jqXHR.status, jqXHR.responseText);
                 }
             },
             success: function (data, status, jqXHR) {

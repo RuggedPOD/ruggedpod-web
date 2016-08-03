@@ -18,10 +18,59 @@
 -->
 
 <div class="section-title">
-    <h4>configuration</h4>
+    <h4>DHCP Configuration</h4>
     <hr/>
 </div>
 
-<div class="text-center">
-    (not yet available)
+<div class="section-users" style="margin-top: 20px">
+    <form class="form-horizontal">
+
+        <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label" for="dhcpRangeStart">Mode</label>
+            <div class="col-sm-8 col-lg-5" style="padding-top: 15px">
+                <input type="radio" name="{{ dhcp.dhcp_mode }}" value="proxy"> Proxy-DHCP
+                <input type="radio" name="{{ dhcp.dhcp_mode }}" value="dhcp" checked style="margin-left: 30px"> DHCP
+            </div>
+        </div>
+
+        <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label" for="dhcpRangeNetmask">Network</label>
+            <div class="col-sm-8 col-lg-5">
+                <input class="form-control" type="text" id="dhcpRangeNetmask" value="{{ dhcp.dhcp_network }}">
+            </div>
+        </div>
+
+        {{#if dhcp.dhcp_mode === "dhcp"}}
+        <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label" for="dhcpRangeStart">Range start</label>
+            <div class="col-sm-8 col-lg-5">
+                <input class="form-control" type="text" id="dhcpRangeStart" value="{{ dhcp.dhcp_range_start }}">
+            </div>
+        </div>
+
+        <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label" for="dhcpRangeEnd">Range end</label>
+            <div class="col-sm-8 col-lg-5">
+                <input class="form-control" type="text" id="dhcpRangeEnd" value="{{ dhcp.dhcp_range_end }}">
+            </div>
+        </div>
+
+       <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label" for="dhcpLeaseDuration">Lease duration</label>
+            <div class="col-sm-5 col-lg-3">
+                <input class="form-control" type="text" id="dhcpLeaseDuration"
+                       value="{{ dhcp.dhcp_lease_duration }}" {{#if dhcp.dhcp_infinite_lease }}disabled{{/if}}>
+            </div>
+            <div class="col-sm-3 col-lg-2" style="padding-top: 15px">
+                <input type="checkbox" checked='{{ dhcp.dhcp_infinite_lease }}' on-change="dhcp-infinite-lease-changed"> Infinite
+            </div>
+        </div>
+        {{/if}}
+
+        <div class="form-group form-group-lg" style="margin-top: 50px">
+            <div class="col-sm-offset-8 col-sm-2 col-lg-offset-5 col-lg-2">
+                <button id="dhcpSaveButton" type="button" class="btn btn-primary" on-click="dhcp-save" style="width: 100%">Save</button>
+            </div>
+        </div>
+    </form>
 </div>

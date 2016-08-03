@@ -62,8 +62,8 @@ define('hasher', [], function() {
 });
 
 define('app',
-       ['ractive', 'hasher', 'pod', 'bladeList', 'bladeEdit', 'users', 'usersAdd', 'menu', 'serialTerminal'],
-       function(ractive, hasher, pod, bladeList, bladeEdit, users, usersAdd, menu, serialTerminal) {
+       ['ractive', 'hasher', 'pod', 'bladeList', 'bladeEdit', 'users', 'usersAdd', 'menu', 'serialTerminal', 'configuration'],
+       function(ractive, hasher, pod, bladeList, bladeEdit, users, usersAdd, menu, serialTerminal, configuration) {
 
     var modules = {
         'pod': pod,
@@ -72,7 +72,8 @@ define('app',
         'users': users,
         'usersAdd': usersAdd,
         'menu': menu,
-        'serialTerminal': serialTerminal
+        'serialTerminal': serialTerminal,
+        'configuration': configuration
     };
 
     function parseHash(hash) {

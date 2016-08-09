@@ -232,9 +232,16 @@ body {
 
 /* I2C configuration */
 
+
+.i2c-devices-container {
+    margin-bottom: 40px;
+    width: 100%
+}
+
 .i2c-devices {
     border-spacing: 3px;
     border-collapse: separate;
+    margin: 0 auto;
 }
 
 .i2c-devices td {

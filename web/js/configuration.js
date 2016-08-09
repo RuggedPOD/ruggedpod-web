@@ -75,6 +75,9 @@ define(['ractive', 'hasher', 'client', 'notification', 'form'], function(ractive
                 }
             });
         },
+        'i2c-bus-change': function() {
+            ractive.set('i2c.devices', null);
+        },
         'i2c-choose-address': function(e, address) {
             ractive.set("i2c.i2c_power_address", '0x' + address);
         },
@@ -129,6 +132,7 @@ define(['ractive', 'hasher', 'client', 'notification', 'form'], function(ractive
                         }
                     });
                 });
+                ractive.set('i2c.devices', null);
             }
         });
     }

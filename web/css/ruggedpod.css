@@ -229,3 +229,26 @@ body {
 .error-input {
     border-color: #bb0000;
 }
+
+/* I2C configuration */
+
+.i2c-devices {
+    border-spacing: 3px;
+    border-collapse: separate;
+}
+
+.i2c-devices td {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+}
+
+.i2c-novalue {
+    background-color: #ddd;
+}
+
+.i2c-value {
+    background-color: #666;
+    color: #ddd;
+    cursor: pointer;
+}

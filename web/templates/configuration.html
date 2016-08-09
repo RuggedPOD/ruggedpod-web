@@ -81,7 +81,8 @@
 </div>
 
 <div class="section-users">
-    <div style="margin-left: 35px; margin-bottom: 40px; {{#if ! i2c.devices}}display: none;{{/if}}">
+    {{#if i2c.devices}}
+    <div class="i2c-devices-container">
         <table class="i2c-devices">
             <tr>
                 <td></td>
@@ -108,13 +109,15 @@
             {{/each}}
         </table>
     </div>
+    {{/if}}
     <form class="form-horizontal">
         <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label" for="i2cBus">I2C Bus</label>
             <div class="col-sm-8 col-lg-5" style="padding-top: 15px">
                 {{#each i2c.i2c_bus_list}}
                 <span style="margin-right: 30px">
-                    <input type="radio" name="{{ i2c.i2c_power_bus }}" value="{{ .id }}" style="margin-right: 10px">{{ .label }}
+                    <input type="radio" style="margin-right: 10px" name="{{ i2c.i2c_power_bus }}" value="{{ .id }}"
+                           on-change="i2c-bus-change">{{ .label }}
                 </span>
                 {{/each}}
             </div>

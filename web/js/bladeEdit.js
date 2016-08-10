@@ -19,6 +19,15 @@
 
 define(['ractive', 'hasher', 'client', 'notification', 'form'], function(ractive, hasher, client, notification, form) {
 
+    // TODO Get an OS list from the server
+    //      This requires the configuration API (not yet specified)
+    var operatingSystems = [
+        {
+            id: 'ubuntu1404',
+            label: 'Ubuntu 14.04 (Trusty)'
+        }
+    ];
+
     ractive.on({
         'blade-edit-submit': function (event) {
 
@@ -48,7 +57,17 @@ define(['ractive', 'hasher', 'client', 'notification', 'form'], function(ractive
             client.http({
                 path: '/blades/' + blade.id + '/build',
                 method: 'POST',
-                error: function (error) {
+                data: JSON.stringify({
+                    os: blade.os,
+                    hostname: blade.hostname,
+                    username: blade.username,
+                    password: blade.password,
+                    ssh_pub_key: blade.sshPubKey
+                }),
+                error: function (error, status, text) {
+                    if (status === 409 || status === 400) {
+                        return notification.showError(JSON.parse(text).message);
+                    }
                     notification.showError('Unable to enabled build mode for blade ' + blade.id);
                 },
                 success: function(data) {
@@ -76,6 +95,7 @@ define(['ractive', 'hasher', 'client', 'notification', 'form'], function(ractive
     });
 
     function initialize(params) {
+        ractive.set("operatingsystems", operatingSystems);
         client.http({
             path: '/blades/' + params.bladeId,
             method: 'GET',
@@ -84,6 +104,11 @@ define(['ractive', 'hasher', 'client', 'notification', 'form'], function(ractive
             },
             success: function(blade) {
                 ractive.set("blade", blade);
+                ractive.set("blade.os", "ubuntu1404");
+                ractive.set("blade.hostname", "blade" + blade.id);
+                ractive.set("blade.username", "ruggedpod");
+                ractive.set("blade.password", "ruggedpod");
+                ractive.set("blade.sshPubKey", "");
             }
         });
     }

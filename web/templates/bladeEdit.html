@@ -85,18 +85,18 @@
 
 <div class="section-users" style="margin-top: 20px">
     <form class="form-horizontal">
+        {{#if ! blade.building}}
         <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label" for="operatingsystemInput">Operating system</label>
-            <div class="col-sm-8 col-lg-5">
-                <input class="form-control" type="text" list="distrib" id="operatingsystemInput"
-                       value="Ubuntu 14.04 (Trusty)" {{#if blade.building}}disabled{{/if}}>
-                <datalist id="distrib">
-                    <!-- TODO Get an OS list from the server
-                              This requires the configuration API (not yet specified) -->
-                    <option>Ubuntu 14.04 (Trusty)</option>
-                </datalist>
+            <div class="col-sm-8 col-lg-5" style="padding-top: 14px">
+                {{#each operatingsystems}}
+                <div>
+                    <input type="radio" name="{{ blade.os }}" value="{{ .id }}" style="margin-right: 10px">{{ .label }}
+                </div>
+                {{/each}}
             </div>
         </div>
+        {{/if}}
         {{#if blade.building}}
         <div class="form-group form-group-lg" style="margin-top: 50px">
             <div class="col-sm-offset-8 col-sm-2 col-lg-offset-5 col-lg-2">
@@ -104,6 +104,30 @@
             </div>
         </div>
         {{else}}
+        <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label" for="hostnameInput">Hostname</label>
+            <div class="col-sm-8 col-lg-5">
+                <input class="form-control" type="text" id="hostnameInput" value="{{ blade.hostname }}">
+            </div>
+        </div>
+        <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label" for="usernameInput">Username</label>
+            <div class="col-sm-8 col-lg-5">
+                <input class="form-control" type="text" id="usernameInput" value="{{ blade.username }}">
+            </div>
+        </div>
+        <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label" for="passwordInput">Password</label>
+            <div class="col-sm-8 col-lg-5">
+                <input class="form-control" type="text" id="passwordInput" value="{{ blade.password }}">
+            </div>
+        </div>
+        <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label" for="sshPubKeyInput">SSH Public key</label>
+            <div class="col-sm-8 col-lg-5">
+                <input class="form-control" type="text" id="sshPubKeyInput" value="{{ blade.sshPubKey }}">
+            </div>
+        </div>
         <div class="form-group form-group-lg" style="margin-top: 50px">
             <div class="col-sm-offset-8 col-sm-2 col-lg-offset-5 col-lg-2">
                 <button id="bladeBuildButton" type="button" class="btn btn-success" on-click="blade-build-submit" style="width: 100%">Build</button>

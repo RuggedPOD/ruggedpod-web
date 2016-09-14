@@ -4,25 +4,56 @@
 $script = <<SCRIPT
 set -ex
 
+
+##################################################################
+### Apt update
+##################################################################
+
 sudo apt-get update
 
-sudo apt-get install -y apache2 apache2-dev python-dev python-pip libxml2-dev \
-                        libxslt1-dev zlib1g-dev libffi-dev libssl-dev git
 
-
-sudo a2enmod proxy_http
-sudo a2enmod rewrite
-sudo a2enmod proxy_wstunnel
-sudo a2enmod ssl
+##################################################################
+### Generate Self signed certificate
+##################################################################
 
 cert=/etc/ssl/certs/ruggedpod
 sudo openssl req -nodes -newkey rsa:2048 -keyout ${cert}.key -out ${cert}.csr \
                  -subj "/C=FR/ST=Paris/L=Paris/O=OCP/OU=RuggedPOD/CN=admin.ruggedpod"
 sudo openssl x509 -req -days 365 -in ${cert}.csr -signkey ${cert}.key -out ${cert}.crt
 
+
+##################################################################
+### Install tools
+##################################################################
+
+sudo apt-get install -y --force-yes git tcpdump bridge-utils jq curl
+
+
+##################################################################
+### Install Apache + System dependencies for python app
+##################################################################
+
+sudo apt-get install -y --force-yes apache2 python-dev python-pip libxml2-dev \
+                                    libxslt1-dev zlib1g-dev libffi-dev libssl-dev
+
+
+##################################################################
+### Apache configuration
+##################################################################
+
+sudo a2enmod proxy_http
+sudo a2enmod rewrite
+sudo a2enmod proxy_wstunnel
+sudo a2enmod ssl
+
 sudo rm -f /etc/apache2/ports.conf /etc/apache2/sites-enabled/*
 sudo ln -s /vagrant/apache/ports.conf /etc/apache2/ports.conf
 sudo ln -s /vagrant/apache/ruggedpod-vhost.conf /etc/apache2/sites-enabled/ruggedpod-vhost.conf
+
+
+##################################################################
+### Install RuggedPOD API
+##################################################################
 
 cd /opt/ruggedpod-api
 sudo pip install -r test-requirements.txt
@@ -31,20 +62,40 @@ sudo pip uninstall -y rpi.gpio
 
 sed -i "s/profile: production/profile: development/" conf.yaml
 
+
+##################################################################
+### Install NodeJS (for RuggedPOD serial web console)
+##################################################################
+
 curl -sSL https://deb.nodesource.com/setup | sudo bash -
 sudo apt-get install -y git nodejs build-essential
 sudo npm install -g bower
 sudo npm install -g grunt-cli
 
+
+##################################################################
+### Fetch web application dependencies
+##################################################################
+
 cd /vagrant
 sudo rm -rf web/packages
 bower install
+
+
+##################################################################
+### Fetch serial web console dependencies
+##################################################################
 
 cd /vagrant/serial
 sudo chown -R vagrant: /home/vagrant/.npm
 sudo rm -rf node_modules
 npm install --no-bin-links
 sed -i "s/screen-safe/screen-mock/" config.json
+
+
+##################################################################
+### Setup startup script
+##################################################################
 
 sudo tee /etc/rc.local > /dev/null << EOL
 #!/bin/bash

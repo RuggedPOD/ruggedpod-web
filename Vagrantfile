@@ -9,21 +9,11 @@ sudo apt-get update
 sudo apt-get install -y apache2 apache2-dev python-dev python-pip libxml2-dev \
                         libxslt1-dev zlib1g-dev libffi-dev libssl-dev git
 
-mod_wsgi_version=4.4.21
-cd /tmp
-wget https://github.com/GrahamDumpleton/mod_wsgi/archive/${mod_wsgi_version}.tar.gz
-tar xvzf ${mod_wsgi_version}.tar.gz
-cd mod_wsgi-${mod_wsgi_version}
-./configure && make && sudo make install
-cd
-rm -rf /tmp/mod_wsgi-${mod_wsgi_version}
-sudo bash -c 'echo "LoadModule wsgi_module /usr/lib/apache2/modules/mod_wsgi.so" > /etc/apache2/mods-available/wsgi.load'
 
 sudo a2enmod proxy_http
 sudo a2enmod rewrite
 sudo a2enmod proxy_wstunnel
 sudo a2enmod ssl
-sudo a2enmod wsgi
 
 cert=/etc/ssl/certs/ruggedpod
 sudo openssl req -nodes -newkey rsa:2048 -keyout ${cert}.key -out ${cert}.csr \
@@ -39,7 +29,6 @@ sudo pip install -r test-requirements.txt
 sudo pip install -e .
 sudo pip uninstall -y rpi.gpio
 
-sudo bash -c 'echo "from ruggedpod_api.server import app as application" > /var/www/ruggedpod.wsgi'
 sed -i "s/profile: production/profile: development/" conf.yaml
 
 curl -sSL https://deb.nodesource.com/setup | sudo bash -

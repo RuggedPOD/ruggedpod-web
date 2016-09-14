@@ -50,8 +50,10 @@ sudo tee /etc/rc.local > /dev/null << EOL
 #!/bin/bash
 
 cd /vagrant/serial
-npm start >> /var/log/ruggedpod-serial-terminal.log 2>&1 &
+nohup npm start >> /var/log/ruggedpod-serial-terminal.log &
 service apache2 restart
+cd /opt/ruggedpod-api
+nohup python ruggedpod_api/server.py --debug >> /var/log/ruggedpod-api.log 2>&1 &
 EOL
 
 sudo chmod a+x /etc/rc.local

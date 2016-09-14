@@ -43,6 +43,58 @@ sleep 5  # Dnsmasq startup can cause temporary network issue during a short time
 
 
 ##################################################################
+### Install Docker
+##################################################################
+
+curl -s 'https://sks-keyservers.net/pks/lookup?op=get&search=0xee6d536cf7dc86e2d7d56f59a178ac6c6238f52e' | sudo apt-key add --import
+echo "deb https://packages.docker.com/1.11/apt/repo ubuntu-trusty main" | sudo tee /etc/apt/sources.list.d/docker.list
+
+sudo apt-get update
+sudo apt-get install -y --force-yes linux-headers-3.13.0-85-generic \
+                                    apt-transport-https \
+                                    linux-image-extra-virtual \
+                                    docker-engine
+
+sudo usermod -aG docker vagrant
+
+sudo bash -c 'echo "DOCKER_OPTS=\\\"-H unix:// -H tcp://0.0.0.0:2375\\\"" > /etc/default/docker'
+
+sudo service docker restart
+
+
+##################################################################
+### Wait for docker deamon to be ready
+##################################################################
+
+set +e
+
+while true ; do
+  sleep 1
+  sudo docker info
+  if [ $? -eq 0 ] ; then
+    break
+  fi
+done
+
+set -e
+
+##################################################################
+### Build Docker image for blade emulation
+##################################################################
+
+sudo docker build -t blade:latest /vagrant/dev
+
+
+##################################################################
+### Run four containers to emulate the four blades
+##################################################################
+
+for i in 1 2 3 4 ; do
+    sudo docker run -d --restart=always --name blade${i} blade:latest
+done
+
+
+##################################################################
 ### Install Apache + System dependencies for python app
 ##################################################################
 

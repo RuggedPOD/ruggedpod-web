@@ -30,6 +30,19 @@ sudo apt-get install -y --force-yes git tcpdump bridge-utils jq curl
 
 
 ##################################################################
+### Install DHCP server
+##################################################################
+
+sudo apt-get install -y --force-yes dnsmasq
+
+sudo mkdir -p /tftp/pxe/pxelinux.cfg
+sudo mkdir -p /var/www/pxe
+
+sleep 5  # Dnsmasq startup can cause temporary network issue during a short time
+         # Wait to avoid any problem
+
+
+##################################################################
 ### Install Apache + System dependencies for python app
 ##################################################################
 

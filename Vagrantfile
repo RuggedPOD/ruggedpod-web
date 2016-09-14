@@ -37,7 +37,7 @@ sudo openssl x509 -req -days 365 -in ${cert}.csr -signkey ${cert}.key -out ${cer
 ### Install tools
 ##################################################################
 
-sudo apt-get install -y --force-yes git tcpdump bridge-utils jq curl
+sudo apt-get install -y --force-yes git tcpdump bridge-utils jq curl build-essential
 
 
 ##################################################################
@@ -143,8 +143,9 @@ sed -i "s/profile: production/profile: development/" conf.yaml
 ### Install NodeJS (for RuggedPOD serial web console)
 ##################################################################
 
-curl -sSL https://deb.nodesource.com/setup | sudo bash -
-sudo apt-get install -y git nodejs build-essential
+curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
 sudo npm install -g bower
 sudo npm install -g grunt-cli
 
@@ -165,7 +166,7 @@ bower install
 cd /vagrant/serial
 sudo chown -R vagrant: /home/vagrant/.npm
 sudo rm -rf node_modules
-npm install --no-bin-links
+npm install
 sed -i "s/screen-safe/screen-mock/" config.json
 
 

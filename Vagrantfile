@@ -4,65 +4,184 @@
 $script = <<SCRIPT
 set -ex
 
+
+##################################################################
+### SSH Config
+##################################################################
+
+mkdir -p $HOME/.ssh
+cat > $HOME/.ssh/config <<EOF
+Host *
+    StrictHostKeyChecking no
+EOF
+
+
+##################################################################
+### Apt update
+##################################################################
+
 sudo apt-get update
 
-sudo apt-get install -y apache2 apache2-dev python-dev python-pip libxml2-dev \
-                        libxslt1-dev zlib1g-dev libffi-dev libssl-dev git
 
-mod_wsgi_version=4.4.21
-cd /tmp
-wget https://github.com/GrahamDumpleton/mod_wsgi/archive/${mod_wsgi_version}.tar.gz
-tar xvzf ${mod_wsgi_version}.tar.gz
-cd mod_wsgi-${mod_wsgi_version}
-./configure && make && sudo make install
-cd
-rm -rf /tmp/mod_wsgi-${mod_wsgi_version}
-sudo bash -c 'echo "LoadModule wsgi_module /usr/lib/apache2/modules/mod_wsgi.so" > /etc/apache2/mods-available/wsgi.load'
-
-sudo a2enmod proxy_http
-sudo a2enmod rewrite
-sudo a2enmod proxy_wstunnel
-sudo a2enmod ssl
-sudo a2enmod wsgi
+##################################################################
+### Generate Self signed certificate
+##################################################################
 
 cert=/etc/ssl/certs/ruggedpod
 sudo openssl req -nodes -newkey rsa:2048 -keyout ${cert}.key -out ${cert}.csr \
                  -subj "/C=FR/ST=Paris/L=Paris/O=OCP/OU=RuggedPOD/CN=admin.ruggedpod"
 sudo openssl x509 -req -days 365 -in ${cert}.csr -signkey ${cert}.key -out ${cert}.crt
 
+
+##################################################################
+### Install tools
+##################################################################
+
+sudo apt-get install -y --force-yes git tcpdump bridge-utils jq curl build-essential
+
+
+##################################################################
+### Install DHCP server
+##################################################################
+
+sudo apt-get install -y --force-yes dnsmasq
+
+sudo mkdir -p /tftp/pxe/pxelinux.cfg
+sudo mkdir -p /var/www/pxe
+
+sleep 5  # Dnsmasq startup can cause temporary network issue during a short time
+         # Wait to avoid any problem
+
+
+##################################################################
+### Install Docker
+##################################################################
+
+curl -s 'https://sks-keyservers.net/pks/lookup?op=get&search=0xee6d536cf7dc86e2d7d56f59a178ac6c6238f52e' | sudo apt-key add --import
+echo "deb https://packages.docker.com/1.11/apt/repo ubuntu-trusty main" | sudo tee /etc/apt/sources.list.d/docker.list
+
+sudo apt-get update
+sudo apt-get install -y --force-yes linux-headers-3.13.0-85-generic \
+                                    apt-transport-https \
+                                    linux-image-extra-virtual \
+                                    docker-engine
+
+sudo usermod -aG docker vagrant
+
+sudo bash -c 'echo "DOCKER_OPTS=\\\"-H unix:// -H tcp://0.0.0.0:2375\\\"" > /etc/default/docker'
+
+sudo service docker restart
+
+
+##################################################################
+### Wait for docker deamon to be ready
+##################################################################
+
+set +e
+
+while true ; do
+  sleep 1
+  sudo docker info
+  if [ $? -eq 0 ] ; then
+    break
+  fi
+done
+
+set -e
+
+##################################################################
+### Build Docker image for blade emulation
+##################################################################
+
+sudo docker build -t blade:latest /vagrant/dev
+
+
+##################################################################
+### Run four containers to emulate the four blades
+##################################################################
+
+for i in 1 2 3 4 ; do
+    sudo docker run -d --restart=always --name blade${i} blade:latest
+done
+
+
+##################################################################
+### Install Apache + System dependencies for python app
+##################################################################
+
+sudo apt-get install -y --force-yes apache2 python-dev python-pip libxml2-dev \
+                                    libxslt1-dev zlib1g-dev libffi-dev libssl-dev
+
+
+##################################################################
+### Apache configuration
+##################################################################
+
+sudo a2enmod proxy_http
+sudo a2enmod rewrite
+sudo a2enmod proxy_wstunnel
+sudo a2enmod ssl
+
 sudo rm -f /etc/apache2/ports.conf /etc/apache2/sites-enabled/*
 sudo ln -s /vagrant/apache/ports.conf /etc/apache2/ports.conf
 sudo ln -s /vagrant/apache/ruggedpod-vhost.conf /etc/apache2/sites-enabled/ruggedpod-vhost.conf
+
+
+##################################################################
+### Install RuggedPOD API
+##################################################################
 
 cd /opt/ruggedpod-api
 sudo pip install -r test-requirements.txt
 sudo pip install -e .
 sudo pip uninstall -y rpi.gpio
 
-sudo bash -c 'echo "from ruggedpod_api.server import app as application" > /var/www/ruggedpod.wsgi'
 sed -i "s/profile: production/profile: development/" conf.yaml
 
-curl -sSL https://deb.nodesource.com/setup | sudo bash -
-sudo apt-get install -y git nodejs build-essential
+
+##################################################################
+### Install NodeJS (for RuggedPOD serial web console)
+##################################################################
+
+curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
 sudo npm install -g bower
 sudo npm install -g grunt-cli
+
+
+##################################################################
+### Fetch web application dependencies
+##################################################################
 
 cd /vagrant
 sudo rm -rf web/packages
 bower install
 
+
+##################################################################
+### Fetch serial web console dependencies
+##################################################################
+
 cd /vagrant/serial
 sudo chown -R vagrant: /home/vagrant/.npm
 sudo rm -rf node_modules
-npm install --no-bin-links
+npm install
 sed -i "s/screen-safe/screen-mock/" config.json
+
+
+##################################################################
+### Setup startup script
+##################################################################
 
 sudo tee /etc/rc.local > /dev/null << EOL
 #!/bin/bash
 
 cd /vagrant/serial
-npm start >> /var/log/ruggedpod-serial-terminal.log 2>&1 &
+nohup npm start >> /var/log/ruggedpod-serial-terminal.log &
 service apache2 restart
+cd /opt/ruggedpod-api
+nohup python ruggedpod_api/server.py --debug >> /var/log/ruggedpod-api.log 2>&1 &
 EOL
 
 sudo chmod a+x /etc/rc.local
